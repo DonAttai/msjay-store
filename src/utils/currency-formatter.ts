@@ -1,6 +1,8 @@
+const FORMAT_CURRENCY = new Intl.NumberFormat("en-NG", {
+  currency: "NGN",
+  style: "currency",
+});
+
 export function currencyFormatter(number: number) {
-  return new Intl.NumberFormat(undefined, {
-    currency: "NGN",
-    style: "currency",
-  }).format(number);
+  return FORMAT_CURRENCY.format(number * 905);
 }

@@ -9,11 +9,14 @@ export const Item = ({ id, quantity }: CartItem) => {
   const amount = Number(product?.price) * quantity;
 
   return (
-    <section className="container mx-auto">
-      <div className="flex justify-between">
-        <div className="flex">
-          <img src={product?.image} width={32} alt={product?.title} />
+    <section className="container mx-auto mb-4">
+      <div className="flex justify-between items-center">
+        <div className="flex items-center gap-2">
+          <img src={product?.image} width={64} alt={product?.title} />
           <p>x{quantity}</p>
+        </div>
+        <div>
+          <p>{currencyFormatter(Number(product?.price))}</p>
         </div>
         <div>
           <p>{currencyFormatter(amount)}</p>

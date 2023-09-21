@@ -1,10 +1,11 @@
-import { useCartActions } from "../stores/cart-store";
+import { useCart, useCartActions } from "../stores/cart-store";
 import { currencyFormatter } from "../utils/currency-formatter";
 import { Product } from "../types";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 
 export const StoreItem = ({ id, title, price, image }: Product) => {
+  useCart();
   const {
     increaseItemQuantity,
     decreaseItemQuantity,
@@ -15,17 +16,13 @@ export const StoreItem = ({ id, title, price, image }: Product) => {
 
   return (
     <div className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-4">
-      <div className="bg-white rounded-lg  flex flex-col items-center justify-between py-4 h-96 hover:shadow-md hover:border">
-        <Link
-          to={`product/${id}`}
-          className="p-2 hover:underline uppercase font-semibold"
-        >
-          {title}
-        </Link>
+      <div className="bg-white rounded-lg group flex flex-col items-center justify-between py-4 min-h-[450px] shadow-md border">
         <p className="text-black font-extrabold text-xl">
-          {currencyFormatter(Number(price) * 905)}
+          {currencyFormatter(Number(price))}
         </p>
-        <img src={image} height={64} width={120} alt={title} />
+        <div>
+          <img src={image} width={200} alt={title} />
+        </div>
         <div>
           {itemQuantity ? (
             <div className="flex flex-col gap-3 items-center">
@@ -65,7 +62,7 @@ export const StoreItem = ({ id, title, price, image }: Product) => {
             </div>
           ) : (
             <button
-              className="border  bg-green-800 text-white shadow font-semibold p-1 rounded-lg hover:bg-green-600"
+              className="border  bg-green-800 opacity-0 text-white shadow font-semibold p-1 rounded-lg transition duration-300 group-hover:opacity-100 hover:bg-green-600"
               onClick={() => {
                 increaseItemQuantity(+id);
                 toast.success("Product added successfully!");
@@ -75,6 +72,14 @@ export const StoreItem = ({ id, title, price, image }: Product) => {
             </button>
           )}
         </div>
+      </div>
+      <div className="text-center mt-5">
+        <Link
+          to={`product/${id}`}
+          className="p-2 hover:underline uppercase font-semibold"
+        >
+          {title}
+        </Link>
       </div>
     </div>
   );
