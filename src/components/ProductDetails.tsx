@@ -18,7 +18,7 @@ export const ProductDetails = () => {
   const itemQuantity = getItemQuantity(Number(id));
 
   return (
-    <section className="md:h-[calc(100vh-128px)] flex items-center justify-center container mx-auto">
+    <section className="md:min-h-[calc(100vh-128px)] flex items-center justify-center container mx-auto">
       <div className="h-full flex flex-col justify-center gap-5 items-center w-full md:flex-row">
         <div className="flex-1 h-full flex items-center">
           <img
@@ -43,7 +43,7 @@ export const ProductDetails = () => {
                 <div className="flex flex-col gap-3">
                   <div className="flex justify-center">
                     <button
-                      className="border  bg-green-800 text-white shadow px-1 mx-2 w-6 text-2xl hover:bg-green-600"
+                      className="border bg-green-800 text-white rounded-md shadow-md px-1 mx-2 w-8 text-2xl hover:bg-green-600"
                       onClick={() => {
                         decreaseItemQuantity(Number(id));
                         toast.success("Item quantity has been updated!");
@@ -56,7 +56,7 @@ export const ProductDetails = () => {
                       added)
                     </p>
                     <button
-                      className="border  bg-green-800 text-white mx-2 shadow px-1 w-6 text-2xl hover:bg-green-600"
+                      className="border bg-green-800 text-white rounded-md mx-2 shadow-md px-1 w-8 text-2xl hover:bg-green-600"
                       onClick={() => {
                         increaseItemQuantity(Number(id));
                         toast.success("Product added successfully!");

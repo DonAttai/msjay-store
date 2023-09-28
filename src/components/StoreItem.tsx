@@ -28,7 +28,7 @@ export const StoreItem = ({ id, title, price, image }: Product) => {
             <div className="flex flex-col gap-3 items-center">
               <div className="flex">
                 <button
-                  className="border  bg-green-800 text-white shadow px-1 mx-2 w-8 font-extrabold text-2xl hover:bg-green-600"
+                  className="border  bg-green-800 text-white rounded-md shadow px-1 mx-2 w-8 font-extrabold text-2xl hover:bg-green-600"
                   onClick={() => {
                     toast.success("Item quantity has been updated!");
                     decreaseItemQuantity(+id);
@@ -41,7 +41,7 @@ export const StoreItem = ({ id, title, price, image }: Product) => {
                   added)
                 </p>
                 <button
-                  className="border  bg-green-800 text-white mx-2 shadow px-1 w-8 text-2xl font-extrabold hover:bg-green-600"
+                  className="border  bg-green-800 text-white mx-2 rounded-md shadow px-1 w-8 text-2xl font-extrabold hover:bg-green-600"
                   onClick={() => {
                     increaseItemQuantity(+id);
                     toast.success("Product added successfully!");
@@ -75,7 +75,7 @@ export const StoreItem = ({ id, title, price, image }: Product) => {
       </div>
       <div className="text-center mt-5">
         <Link
-          to={`product/${id}`}
+          to={`/product/${id}`}
           className="p-2 hover:underline uppercase font-semibold"
         >
           {title}
