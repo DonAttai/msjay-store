@@ -36,7 +36,7 @@ export const ProductDetails = () => {
             <p>{product?.description}</p>
             <p className="text-gray-500">{product?.category}</p>
             <p className="text-black text-2xl font-bold text-center">
-              Price: {currencyFormatter(Number(product?.price))}
+              Unit Price: {currencyFormatter(Number(product?.price))}
             </p>
             <div className="self-center">
               {itemQuantity ? (

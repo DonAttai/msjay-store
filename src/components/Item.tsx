@@ -28,12 +28,15 @@ export const Item = ({ id, quantity }: CartItem) => {
           <div className="flex justify-between">
             <div className="flex gap-5">
               <img src={product?.image} width={64} alt={product?.title} />
-              <Link
-                to={`/product/${product?.id}`}
-                className="text-lg hover:underline"
-              >
-                {product?.title}
-              </Link>
+              <div>
+                <Link
+                  to={`/product/${product?.id}`}
+                  className="text-lg hover:underline"
+                >
+                  {product?.title}
+                </Link>
+                <p>{currencyFormatter(Number(product?.price))}</p>
+              </div>
             </div>
             <p className="text-2xl font-semibold">
               {currencyFormatter(amount)}

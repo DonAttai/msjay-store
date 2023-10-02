@@ -39,7 +39,7 @@ export const Cart = () => {
               <div className="bg-white shadow-md rounded-md w-3/4">
                 <div className="flex flex-col justify-between gap-3 pl-5 mt-4">
                   <h3 className="text-xl font-semibold">
-                    Shopping Cart ({getCartQuantity()})
+                    Cart ({getCartQuantity()})
                   </h3>
                 </div>
                 <div>
@@ -65,13 +65,13 @@ export const Cart = () => {
                     onClick={() => clearCart()}
                     className="p-2 bg-green-600 rounded-md shadow text-white font-bold"
                   >
-                    CHECKOUT
+                    Proceed to checkout
                   </button>
                   <Link
                     to="/"
                     className="p-2 bg-green-600 rounded-md shadow text-white font-bold"
                   >
-                    CONTINUE SHOPPING
+                    Continue shopping
                   </Link>
                 </div>
               </div>
