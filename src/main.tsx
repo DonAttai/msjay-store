@@ -12,13 +12,16 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import App from "./App.tsx";
 import "./index.css";
 import { Home } from "./pages/";
-import { Cart, ProductDetails } from "./components/";
+import { Cart, Paystack, ProductDetails, Protected } from "./components/";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
-      <Route path="/" element={<Home />} />
+      <Route index element={<Home />} />
       <Route path="cart" element={<Cart />} />
+      <Route element={<Protected />}>
+        <Route path="payment" element={<Paystack />} />
+      </Route>
       <Route path="product/:id" element={<ProductDetails />} />
     </Route>
   )

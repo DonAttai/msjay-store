@@ -1,3 +1,6 @@
+//import react hooks
+import { useReducer } from "react";
+
 // import cart-store hooks
 import {
   useCart,
@@ -8,18 +11,33 @@ import {
 //import currencYFormatter
 import { currencyFormatter } from "../utils/currency-formatter";
 
+// import user-store  hooks
+// import { useUser } from "../stores/user-store";
+
 //import components
 import { Item, StoreItem } from ".";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaShoppingCart } from "react-icons/fa";
 
-// import react-query-hooks
+// import  react-query custom hooks
 import { useProducts } from "../hooks/react-query-hooks";
 import { Product } from "../types";
 
+//import modal
+import { Modal } from "./Modal";
+
 export const Cart = () => {
-  const { getCartQuantity, clearCart } = useCartActions();
+  const { getCartQuantity } = useCartActions();
   const { data } = useProducts();
+  const [isOpen, toggleModal] = useReducer(
+    (currentState) => !currentState,
+    false
+  );
+
+  // const user = useUser();
+  const user = "Attai";
+
+  const navigate = useNavigate();
 
   const filteredProducts = data?.filter(
     (product) =>
@@ -33,6 +51,7 @@ export const Cart = () => {
   return (
     <>
       <section className=" bg-gray-100 min-h-screen p-4">
+        {isOpen && <Modal isOpen={isOpen} toggleModal={toggleModal} />}
         <div>
           {cart.length ? (
             <section className="flex justify-between container mx-auto gap-5 ">
@@ -62,7 +81,9 @@ export const Cart = () => {
                 </div>
                 <div className="text-center mb-2 gap-2 flex flex-col px-4">
                   <button
-                    onClick={() => clearCart()}
+                    onClick={() => {
+                      return user ? navigate("/payment") : toggleModal();
+                    }}
                     className="p-2 bg-green-600 rounded-md shadow text-white font-bold"
                   >
                     Proceed to checkout

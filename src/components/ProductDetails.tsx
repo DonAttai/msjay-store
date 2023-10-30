@@ -18,7 +18,7 @@ export const ProductDetails = () => {
   const itemQuantity = getItemQuantity(Number(id));
 
   return (
-    <section className="md:min-h-[calc(100vh-128px)] flex items-center justify-center container mx-auto">
+    <section className="min-h-[calc(100vh-128px)] flex items-center justify-center container mx-auto">
       <div className="h-full flex flex-col justify-center gap-5 items-center w-full md:flex-row">
         <div className="flex-1 h-full flex items-center">
           <img

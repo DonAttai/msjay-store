@@ -11,3 +11,8 @@ export interface CartItem {
   id: number;
   quantity: number;
 }
+
+export interface User {
+  email: string;
+  name: string;
+}

@@ -20,9 +20,9 @@ export const StoreItem = ({ id, title, price, image }: Product) => {
         <p className="text-black font-extrabold text-xl">
           {currencyFormatter(Number(price))}
         </p>
-        <div>
+        <figure>
           <img src={image} width={200} alt={title} />
-        </div>
+        </figure>
         <div>
           {itemQuantity ? (
             <div className="flex flex-col gap-3 items-center">

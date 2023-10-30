@@ -1,4 +1,4 @@
-import { FaShoppingCart } from "react-icons/fa";
+import { TiShoppingCart } from "react-icons/ti";
 import { useCartActions } from "../stores/cart-store";
 import { Link, NavLink } from "react-router-dom";
 // import { useReducer } from "react";
@@ -9,18 +9,19 @@ export const Header = () => {
 
   return (
     <>
-      {/* {isCartOpen && <Cart isCartOpen={isCartOpen} toggleCart={toggleCart} />} */}
-      <header className="w-screen h-16 bg-slate-900  text-white font-bold text-xl fixed ">
+      <header className="w-screen h-16 bg-slate-900  text-white font-bold text-xl fixed z-10">
         <div className=" container mx-auto h-full flex items-center justify-between pr-8 ">
-          <NavLink to="/" className="pl-2">
+          <NavLink to="/" className="pl-2 duration-300 hover:text-green-400">
             Ms Jay Store
           </NavLink>
-          <Link to="cart" className="text-2xl relative">
-            <FaShoppingCart size="1.8em" />
-            <span className="absolute rounded-full text-red-500 text-sm font-extrabold top-1.5 right-2 px-1">
-              {cartQuantity}
+          <div className="flex duration-300 hover:text-green-400">
+            <Link to="cart" className="text-lg">
+              <TiShoppingCart size="1.8em" />
+            </Link>
+            <span className=" rounded-full text-base font-medium px-1">
+              ({cartQuantity})
             </span>
-          </Link>
+          </div>
         </div>
       </header>
     </>

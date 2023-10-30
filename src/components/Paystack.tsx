@@ -1,52 +1,31 @@
-// import { usePaystackPayment } from "react-paystack";
+import { useCalculateTotalPrice } from "../stores/cart-store";
+import { PaystackButton } from "react-paystack";
 
-// const formData = new FormData();
+const publicKey = import.meta.env.VITE_PAYSTACK_PUBLIC_KEY;
 
-// export const Paystack = () => {
-//   const config = {
-//     reference: new Date().getTime().toString(),
-//     email: formData.get("email") as string,
-//     amount: Number(formData.get("amount")) * 100,
-//     publicKey: import.meta.env.PUBLIC_KEY,
-//   };
+export const Paystack = () => {
+  const amount = 1005 * useCalculateTotalPrice() * 100;
 
-//   const initializePayment = usePaystackPayment(config);
+  console.log(amount);
 
-//   // you can call this function anything
-//   const onSuccess = (reference) => {
-//     // Implementation for whatever you want to do with reference and after success call.
-//     console.log(reference);
-//   };
+  const componentProps = {
+    email: "donattai1032@gmail.com",
+    amount,
+    publicKey,
+    text: "Pay Now",
+    onSuccess: () =>
+      alert("Thanks for doing business with us! Come back soon!!"),
+    onClose: () => alert("Wait! You need this oil, don't go!!!!"),
+  };
 
-//   // you can call this function anything
-//   const onClose = () => {
-//     // implementation for  whatever you want to do when the Paystack dialog closed.
-//     console.log("closed");
-//   };
-//   return (
-//     <div>
-//       <div>
-//         <form>
-//           <div>
-//             <label htmlFor="">Email:</label>
-//             <input type="email" name="email" />
-//           </div>
-//           <div>
-//             <label htmlFor="">Amount:</label>
-//             <input type="number" name="amount" />
-//           </div>
-//         </form>
-//       </div>
-//       <div>
-//         <button
-//           type="submit"
-//           onClick={() => {
-//             initializePayment(onSuccess, onClose);
-//           }}
-//         >
-//           Paystack Hooks Implementation
-//         </button>
-//       </div>
-//     </div>
-//   );
-// };
+  return (
+    <div className="min-h-[calc(100vh-128px)] pt-10">
+      <div className="text-center">
+        <PaystackButton
+          {...componentProps}
+          className="bg-green-600 text-white py-2 px-8 text-2xl rounded-md font-semibold"
+        />
+      </div>
+    </div>
+  );
+};

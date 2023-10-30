@@ -14,8 +14,8 @@ const axiosInstance = axios.create({
 export const useProducts = () => {
   return useQuery({
     queryKey: ["products"],
-    queryFn: (): Promise<Product[]> =>
-      axiosInstance.get("/products").then((res) => res.data),
+    queryFn: () =>
+      axiosInstance.get<Product[]>("/products").then((res) => res.data),
   });
 };
 
