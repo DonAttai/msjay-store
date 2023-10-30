@@ -44,7 +44,7 @@ export const Hero = () => {
         ></div>
 
         <Link
-          to={`/`}
+          to={`/product/`}
           className="absolute bg-green-400 p-2 rounded-md font-bold text-white bottom-10 translate-y-[-50%] right-16 text-xl duration-500 hover:bg-transparent hover:text-green-600"
         >
           BUY NOW!
