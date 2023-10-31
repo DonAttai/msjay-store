@@ -32,20 +32,21 @@ export const Hero = () => {
   }, [nextSlide]);
 
   return (
-    <div className="container mx-auto flex justify-center items-center bg-blue-50 p-4 mt-4">
-      <div className="w-80 h-96 flex justify-center items-center relative bg-white">
+    <div className="container mx-auto flex justify-center items-center bg-blue-50 mt-4 ">
+      <div className="w-[200px] h-[300px] flex justify-center items-center relative m-2">
         <div
           style={{
+            // padding: "1px",
             backgroundImage: `url(${
               productList && productList[currentIndex].image
             })`,
           }}
-          className="w-2/4 h-3/4 bg-cover bg-center"
+          className="w-full h-full bg-cover bg-center bg-clip-content rounded-md "
         ></div>
 
         <Link
           to={`/product/`}
-          className="absolute bg-green-400 p-2 rounded-md font-bold text-white bottom-10 translate-y-[-50%] right-16 text-xl duration-500 hover:bg-transparent hover:text-green-600"
+          className="absolute bg-green-400 p-1 rounded-md font-bold text-white bottom-10 translate-y-[-50%] right-10 text-lg duration-500 hover:bg-transparent hover:text-green-600"
         >
           BUY NOW!
         </Link>
