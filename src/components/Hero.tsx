@@ -10,7 +10,11 @@ export const Hero = () => {
 
   const productList = products
     ?.filter((product) => product.category === "women's clothing")
-    ?.map((product) => ({ id: product.id, image: product.image }));
+    ?.map((product) => ({
+      id: product.id,
+      image: product.image,
+      title: product.title,
+    }));
 
   const nextSlide = useCallback(() => {
     const lastSlide = currentIndex === (productList && productList?.length - 1);
@@ -33,23 +37,24 @@ export const Hero = () => {
 
   return (
     <div className="container mx-auto flex justify-center items-center bg-blue-50 mt-4 ">
-      <div className="w-[200px] h-[300px] flex justify-center items-center relative m-2">
-        <div
-          style={{
-            // padding: "1px",
-            backgroundImage: `url(${
-              productList && productList[currentIndex].image
-            })`,
-          }}
-          className="w-full h-full bg-cover bg-center bg-clip-content rounded-md "
-        ></div>
-
-        <Link
-          to={`/product/`}
-          className="absolute bg-green-400 p-1 rounded-md font-bold text-white bottom-10 translate-y-[-50%] right-10 text-lg duration-500 hover:bg-transparent hover:text-green-600"
-        >
-          BUY NOW!
-        </Link>
+      <div className="flex justify-center m-4">
+        <div className="w-64 h-96 overflow-hidden">
+          {productList?.map((product) => (
+            <div key={product.id} className=" flex w-full h-full relative">
+              <img
+                src={productList[currentIndex].image}
+                className="w-full h-full rounded-md"
+                alt={product.title}
+              />
+              <Link
+                to={`/product/${productList[currentIndex].id}`}
+                className="absolute bg-green-400 p-2 rounded-md font-bold text-white bottom-20 translate-y-[-50%] right-10 text-lg duration-500 hover:bg-transparent hover:text-green-600"
+              >
+                BUY NOW!
+              </Link>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
