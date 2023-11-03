@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useProducts } from "../hooks/react-query-hooks";
-import { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 
 export const Hero = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -23,36 +23,36 @@ export const Hero = () => {
   }, [currentIndex, productList]);
 
   useEffect(() => {
-    console.log("use effect");
     if (timerRef.current) {
       clearTimeout(timerRef.current);
     }
 
     timerRef.current = setTimeout(() => {
       nextSlide();
-    }, 2000);
+    }, 3000);
 
     return () => clearTimeout(timerRef.current as number);
   }, [nextSlide]);
 
   return (
-    <div className="container mx-auto flex justify-center items-center bg-blue-50 mt-4 ">
-      <div className="flex justify-center m-4">
-        <div className="w-64 h-96 overflow-hidden">
+    <div className="container mx-auto flex justify-center items-center  bg-blue-50 mt-4 ">
+      <div className="w-48 h-80 overflow-hidden my-4">
+        <div className=" flex w-full h-full relative">
           {productList?.map((product) => (
-            <div key={product.id} className=" flex w-full h-full relative">
+            <React.Fragment key={product.id}>
               <img
+                key={product.id}
                 src={productList[currentIndex].image}
-                className="w-full h-full rounded-md"
-                alt={product.title}
+                className="flex w-full h-full rounded-md shadow-md"
+                alt={productList[currentIndex].title}
               />
               <Link
                 to={`/product/${productList[currentIndex].id}`}
-                className="absolute bg-green-400 p-2 rounded-md font-bold text-white bottom-20 translate-y-[-50%] right-10 text-lg duration-500 hover:bg-transparent hover:text-green-600"
+                className="absolute bg-green-400 px-2 py-1  shadow rounded-md font-bold text-white bottom-20 translate-y-[-50%] right-10 text-lg duration-400 hover:bg-green-600"
               >
                 BUY NOW!
               </Link>
-            </div>
+            </React.Fragment>
           ))}
         </div>
       </div>
