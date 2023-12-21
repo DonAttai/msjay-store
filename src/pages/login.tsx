@@ -63,7 +63,7 @@ export const Login = () => {
       <div className="w-full flex items-center justify-center">
         <form
           onSubmit={onSubmit}
-          className="flex flex-col items-center shadow-md border rounded-md gap-4 px-4 py-10 sm:w-2/3 md:w-1/3 "
+          className="flex flex-col items-center shadow-md border w-full mx-2 px-2 rounded-md gap-4 md:px-4 py-10 md:w-1/3 "
         >
           <h1 className=" text-xl font-semibold text-green-500">
             Ms Jay Store

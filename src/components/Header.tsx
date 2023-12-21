@@ -70,7 +70,7 @@ export const Header = () => {
                         }}
                         className="cursor-pointer flex items-center gap-2 mb-3"
                       >
-                        <CiLogout />
+                        <CiLogout className="font-bold" />
                         Logout
                       </li>
                     </ul>

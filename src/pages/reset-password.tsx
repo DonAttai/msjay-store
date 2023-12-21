@@ -3,11 +3,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useResetPassword } from "../hooks/useResetPassword";
 import toast from "react-hot-toast";
 import { AxiosError } from "axios";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useUser } from "../stores/user-store";
 
 export const ResetPassword = () => {
   const { token, id } = useParams();
+  const [password, setPassword] = useState("");
   const { mutate, isLoading } = useResetPassword();
   const user = useUser();
 
@@ -20,15 +21,10 @@ export const ResetPassword = () => {
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const formData = new FormData(e.currentTarget);
-    const password = formData.get("password") as string;
-
-    console.log(typeof password);
-
     mutate(
-      { password, id: id!, token: token! },
+      { password: password, id: id!, token: token! },
       {
-        onSuccess: () => (e!.target as HTMLFormElement)!.reset(),
+        onSuccess: () => setPassword(""),
 
         onError: (error) => {
           if (error instanceof AxiosError) {
@@ -41,7 +37,7 @@ export const ResetPassword = () => {
 
   return (
     <div className="min-h-[calc(100vh-128px)] flex items-center justify-center container mx-auto">
-      <div className="w-full flex items-center justify-center">
+      <div className="w-full flex items-center justify-center mx-2">
         <form
           onSubmit={onSubmit}
           className=" flex flex-col shadow-md border rounded-md gap-4 p-4 sm:w-2/3 md:w-1/3"
@@ -53,8 +49,10 @@ export const ResetPassword = () => {
             <label htmlFor="password">Enter your new password</label>
             <input
               type="password"
+              value={password}
               name="password"
               id="password"
+              onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter your new password"
               className="shadow border p-2 rounded-md focus:outline-none w-full"
             />
