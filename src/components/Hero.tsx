@@ -1,60 +1,16 @@
-import { Link } from "react-router-dom";
-import { useProducts } from "../hooks/react-query-hooks";
-import React, { useCallback, useEffect, useRef, useState } from "react";
-
 export const Hero = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const timerRef = useRef<number | null>(null);
-
-  const { data: products } = useProducts();
-
-  const productList = products
-    ?.filter((product) => product.category === "women's clothing")
-    ?.map((product) => ({
-      id: product.id,
-      image: product.image,
-      title: product.title,
-    }));
-
-  const nextSlide = useCallback(() => {
-    const lastSlide = currentIndex === (productList && productList?.length - 1);
-    const nextIndex = lastSlide ? 0 : currentIndex + 1;
-    setCurrentIndex(nextIndex);
-  }, [currentIndex, productList]);
-
-  useEffect(() => {
-    if (timerRef.current) {
-      clearTimeout(timerRef.current);
-    }
-
-    timerRef.current = setTimeout(() => {
-      nextSlide();
-    }, 3000);
-
-    return () => clearTimeout(timerRef.current as number);
-  }, [nextSlide]);
-
   return (
-    <div className="container mx-auto flex justify-center items-center  bg-blue-50 mt-4 ">
-      <div className="w-48 h-80 overflow-hidden my-4">
-        <div className=" flex w-full h-full relative">
-          {productList?.map((product) => (
-            <React.Fragment key={product.id}>
-              <img
-                key={product.id}
-                src={productList[currentIndex].image}
-                className="flex w-full h-full rounded-md shadow-md"
-                alt={productList[currentIndex].title}
-              />
-              <Link
-                to={`/product/${productList[currentIndex].id}`}
-                className="absolute bg-green-400 px-2 py-1  shadow rounded-md font-bold text-white bottom-20 translate-y-[-50%] right-10 text-lg duration-400 hover:bg-green-600"
-              >
-                BUY NOW!
-              </Link>
-            </React.Fragment>
-          ))}
-        </div>
+    <div className="h-1/3 bg-cover flex flex-col justify-center items-center px-4 py-8">
+      <div className="relative z-2 bg-white bg-opacity-75 border rounded-lg px-8 py-12 shadow-lg">
+        <h1 className="text-3xl font-bold text-gray-800 mb-4">
+          Welcome to Ms Jay Store the best online shopping destination!
+        </h1>
+        <p className="text-lg text-center text-gray-600 mb-8">
+          Discover a wide range of products and brands at affordable prices.
+        </p>
+        {/* <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded shadow transition-colors">
+          Shop Now
+        </button> */}
       </div>
     </div>
   );

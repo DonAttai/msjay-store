@@ -1,10 +1,10 @@
 import { useCart, useCartActions } from "../stores/cart-store";
 import { currencyFormatter } from "../utils/currency-formatter";
-import { Product } from "../types";
+import { ProductType } from "../types";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 
-export const StoreItem = ({ id, title, price, image }: Product) => {
+export const StoreItem = ({ _id, title, price, image }: ProductType) => {
   useCart();
   const {
     increaseItemQuantity,
@@ -12,7 +12,7 @@ export const StoreItem = ({ id, title, price, image }: Product) => {
     getItemQuantity,
     removeItemFromCart,
   } = useCartActions();
-  const itemQuantity = getItemQuantity(+id) || 0;
+  const itemQuantity = getItemQuantity(_id) || 0;
 
   return (
     <div className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-4">
@@ -28,10 +28,10 @@ export const StoreItem = ({ id, title, price, image }: Product) => {
             <div className="flex flex-col gap-3 items-center">
               <div className="flex">
                 <button
-                  className="border  bg-green-800 text-white rounded-md shadow px-1 mx-2 w-8 font-extrabold text-2xl hover:bg-green-600"
+                  className="border  bg-green-500 text-white rounded-md shadow px-1 mx-2 w-8 font-extrabold text-2xl hover:bg-green-700"
                   onClick={() => {
                     toast.success("Item quantity has been updated!");
-                    decreaseItemQuantity(+id);
+                    decreaseItemQuantity(_id);
                   }}
                 >
                   -
@@ -41,9 +41,9 @@ export const StoreItem = ({ id, title, price, image }: Product) => {
                   added)
                 </p>
                 <button
-                  className="border  bg-green-800 text-white mx-2 rounded-md shadow px-1 w-8 text-2xl font-extrabold hover:bg-green-600"
+                  className="border  bg-green-500 text-white mx-2 rounded-md shadow px-1 w-8 text-2xl font-extrabold hover:bg-green-800"
                   onClick={() => {
-                    increaseItemQuantity(+id);
+                    increaseItemQuantity(_id);
                     toast.success("Product added successfully!");
                   }}
                 >
@@ -51,9 +51,9 @@ export const StoreItem = ({ id, title, price, image }: Product) => {
                 </button>
               </div>
               <button
-                className="bg-green-800 p-2 rounded-lg text-white font-semibold hover:bg-green-600"
+                className="bg-green-500 p-2 rounded-lg text-white font-semibold hover:bg-green-700"
                 onClick={() => {
-                  removeItemFromCart(id);
+                  removeItemFromCart(_id);
                   toast.success("Item was removed from cart!");
                 }}
               >
@@ -62,9 +62,9 @@ export const StoreItem = ({ id, title, price, image }: Product) => {
             </div>
           ) : (
             <button
-              className="border  bg-green-800 opacity-0 text-white shadow font-semibold p-1 rounded-lg transition duration-300 group-hover:opacity-100 hover:bg-green-600"
+              className="border  bg-green-500 opacity-0 text-white shadow font-semibold p-1 rounded-lg transition duration-300 group-hover:opacity-100 hover:bg-green-700"
               onClick={() => {
-                increaseItemQuantity(+id);
+                increaseItemQuantity(_id);
                 toast.success("Product added successfully!");
               }}
             >
@@ -75,7 +75,7 @@ export const StoreItem = ({ id, title, price, image }: Product) => {
       </div>
       <div className="text-center mt-5">
         <Link
-          to={`/product/${id}`}
+          to={`/product/${_id}`}
           className="p-2 hover:underline uppercase font-semibold"
         >
           {title}

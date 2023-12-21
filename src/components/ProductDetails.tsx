@@ -11,11 +11,11 @@ export const ProductDetails = () => {
     decreaseItemQuantity,
     removeItemFromCart,
   } = useCartActions();
-  const { data: products } = useProducts();
+  const { data } = useProducts();
   const { id } = useParams();
 
-  const product = products?.find((item) => item.id === +id!);
-  const itemQuantity = getItemQuantity(Number(id));
+  const product = data?.products?.find((item) => item._id === id);
+  const itemQuantity = getItemQuantity(id!);
 
   return (
     <section className="min-h-[calc(100vh-128px)] flex items-center justify-center container mx-auto">
@@ -43,9 +43,9 @@ export const ProductDetails = () => {
                 <div className="flex flex-col gap-3">
                   <div className="flex justify-center">
                     <button
-                      className="border bg-green-800 text-white rounded-md shadow-md px-1 mx-2 w-8 text-2xl hover:bg-green-600"
+                      className="border bg-green-500 text-white rounded-md shadow-md px-1 mx-2 w-8 text-2xl duration-300 hover:bg-green-700"
                       onClick={() => {
-                        decreaseItemQuantity(Number(id));
+                        decreaseItemQuantity(id!);
                         toast.success("Item quantity has been updated!");
                       }}
                     >
@@ -56,9 +56,9 @@ export const ProductDetails = () => {
                       added)
                     </p>
                     <button
-                      className="border bg-green-800 text-white rounded-md mx-2 shadow-md px-1 w-8 text-2xl hover:bg-green-600"
+                      className="border bg-green-500 text-white rounded-md mx-2 shadow-md px-1 w-8 text-2xl duration-300 hover:bg-green-700"
                       onClick={() => {
-                        increaseItemQuantity(Number(id));
+                        increaseItemQuantity(id!);
                         toast.success("Product added successfully!");
                       }}
                     >
@@ -67,9 +67,9 @@ export const ProductDetails = () => {
                   </div>
                   <div>
                     <button
-                      className="bg-green-800  py-2 px-4 rounded-lg text-white ml-12 font-semibold hover:bg-green-600"
+                      className="bg-green-500  py-2 px-4 rounded-lg text-white ml-12 font-semibold duration-300 hover:bg-green-700"
                       onClick={() => {
-                        removeItemFromCart(Number(id));
+                        removeItemFromCart(id!);
                         toast.success("Item was removed from cart!");
                       }}
                     >
@@ -79,10 +79,9 @@ export const ProductDetails = () => {
                 </div>
               ) : (
                 <button
-                  className="p-2 bg-green-800 text-gray-100 font-semibold rounded-lg hover:bg-green-600 hover:text-white"
+                  className="p-2 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-700 hover:text-white"
                   onClick={() => {
-                    increaseItemQuantity(Number(product?.id));
-                    toast.success("Product added successfully!");
+                    increaseItemQuantity(product?._id as string);
                   }}
                 >
                   ADD TO CART

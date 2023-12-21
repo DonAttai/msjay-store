@@ -1,25 +1,32 @@
 import { create } from "zustand";
-import { User } from "../types";
+import { UserType } from "../hooks/react-query-hooks";
+// import { useUserQuery } from "../hooks/react-query-hooks";
 
 interface UserStore {
-  user: User | null;
+  user: UserType | null;
 
   actions: {
-    setCredentials: (user: User) => void;
+    setCredentials: (user: UserType) => void;
+    logOut: () => void;
   };
 }
 
-const user: User = JSON.parse(
+const userInfo: UserType = JSON.parse(
   localStorage.getItem("user-credentials") as string
 );
+// const url = import.meta.env.VITE_API_URL;
 
 const useUserStore = create<UserStore>()((set) => ({
-  user: user ? user : null,
+  user: userInfo ? userInfo : null,
 
   actions: {
     setCredentials: (credentials) => {
       localStorage.setItem("user-credentials", JSON.stringify(credentials));
       return set({ user: credentials });
+    },
+    logOut: () => {
+      localStorage.removeItem("user-credentials");
+      return set({ user: null });
     },
   },
 }));

@@ -1,6 +1,3 @@
-//import react hooks
-import { useReducer } from "react";
-
 // import cart-store hooks
 import {
   useCart,
@@ -12,46 +9,51 @@ import {
 import { currencyFormatter } from "../utils/currency-formatter";
 
 // import user-store  hooks
-// import { useUser } from "../stores/user-store";
+import { useUser } from "../stores/user-store";
 
 //import components
-import { Item, StoreItem } from ".";
-import { Link, useNavigate } from "react-router-dom";
+import { Item } from ".";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaShoppingCart } from "react-icons/fa";
-
-// import  react-query custom hooks
-import { useProducts } from "../hooks/react-query-hooks";
-import { Product } from "../types";
+import { UserType } from "../hooks/react-query-hooks";
+import toast from "react-hot-toast";
 
 //import modal
-import { Modal } from "./Modal";
 
 export const Cart = () => {
   const { getCartQuantity } = useCartActions();
-  const { data } = useProducts();
-  const [isOpen, toggleModal] = useReducer(
-    (currentState) => !currentState,
-    false
-  );
 
-  // const user = useUser();
-  const user = "Attai";
-
+  const user = useUser() as UserType;
   const navigate = useNavigate();
-
-  const filteredProducts = data?.filter(
-    (product) =>
-      product.category === "women's clothing" || product.category === "jewelery"
-  );
+  const location = useLocation();
 
   const cart = useCart();
 
   const totalPrice = useCalculateTotalPrice();
 
+  const handlePaymentClick = () => {
+    if (user && user.isVerified) {
+      navigate("/payment");
+    } else if (user && !user.isVerified) {
+      toast("Verify your account to checkout");
+    } else {
+      navigate("/auth/login", {
+        state: { from: location },
+        replace: true,
+      });
+      toast.custom(
+        <div className=" flex justify-center items-center bg-white px-2 py-4 rounded-md shadow-md md:w-1/3 sm:w-2/3">
+          <span className="text-green-500 text-xl">
+            👍 You have to login to checkout
+          </span>
+        </div>
+      );
+    }
+  };
+
   return (
     <>
       <section className=" bg-gray-100 min-h-screen p-4">
-        {isOpen && <Modal isOpen={isOpen} toggleModal={toggleModal} />}
         <div>
           {cart.length ? (
             <section className="flex justify-between container mx-auto gap-5 ">
@@ -81,16 +83,14 @@ export const Cart = () => {
                 </div>
                 <div className="text-center mb-2 gap-2 flex flex-col px-4">
                   <button
-                    onClick={() => {
-                      return user ? navigate("/payment") : toggleModal();
-                    }}
-                    className="p-2 bg-green-600 rounded-md shadow text-white font-bold"
+                    onClick={handlePaymentClick}
+                    className="p-2 bg-green-500 rounded-md shadow text-white font-bold duration-300 hover:bg-green-700"
                   >
-                    Proceed to checkout
+                    Checkout
                   </button>
                   <Link
                     to="/"
-                    className="p-2 bg-green-600 rounded-md shadow text-white font-bold"
+                    className="p-2 bg-green-500 rounded-md shadow text-white font-bold duration-300 hover:bg-green-700"
                   >
                     Continue shopping
                   </Link>
@@ -105,24 +105,12 @@ export const Cart = () => {
               <p className="text-xl max-w-sm">Your cart is empty</p>
               <Link
                 to="/"
-                className="bg-green-500 font-semibold shadow-md rounded-md text-white p-2"
+                className="bg-green-500 font-semibold shadow-md rounded-md text-white p-2 hover:bg-green-700"
               >
                 START SHOPPING
               </Link>
             </div>
           )}
-        </div>
-        <div>
-          <div className=" container mx-auto bg-white shadow-md rounded-md my-10">
-            {
-              <div className="flex flex-wrap -m-4 mx-5">
-                {filteredProducts &&
-                  filteredProducts.map((product: Product) => (
-                    <StoreItem key={product.id} {...product} />
-                  ))}
-              </div>
-            }
-          </div>
         </div>
       </section>
     </>

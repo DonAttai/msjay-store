@@ -6,16 +6,14 @@ import { CartItem } from "../types";
 interface CartStore {
   cart: CartItem[];
   actions: {
-    removeItemFromCart: (id: number) => void;
-    increaseItemQuantity: (id: number) => void;
-    decreaseItemQuantity: (id: number) => void;
-    getItemQuantity: (id: number) => number;
+    removeItemFromCart: (id: string) => void;
+    increaseItemQuantity: (id: string) => void;
+    decreaseItemQuantity: (id: string) => void;
+    getItemQuantity: (id: string) => number;
     getCartQuantity: () => number;
     clearCart: () => void;
   };
 }
-
-// const cart: CartItem[] = JSON.parse(localStorage.getItem("cart") as string);
 
 const useCartStore = create<CartStore>()(
   devtools(
@@ -95,9 +93,9 @@ export const useCartActions = () => useCartStore((state) => state.actions);
 //calculate total price
 export const useCalculateTotalPrice = () => {
   const cart = useCart();
-  const { data: products } = useProducts();
+  const { data } = useProducts();
   return cart.reduce((total, cartItem) => {
-    const product = products?.find((item) => item.id === cartItem.id);
+    const product = data?.products.find((item) => item._id === cartItem.id);
     return total + (Number(product?.price) || 0) * cartItem.quantity;
   }, 0);
 };

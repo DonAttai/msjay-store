@@ -1,12 +1,24 @@
 import { useCalculateTotalPrice } from "../stores/cart-store";
 import { PaystackButton } from "react-paystack";
+import { useUser } from "../stores/user-store";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const publicKey = import.meta.env.VITE_PAYSTACK_PUBLIC_KEY;
 
 export const Paystack = () => {
-  const amount = 1005 * useCalculateTotalPrice() * 100;
+  const navigate = useNavigate();
+  const user = useUser();
 
-  console.log(amount);
+  useEffect(() => {
+    if (!user) navigate("/auth/login");
+  });
+
+  // multiply by 1000 to convert from dollar to naira
+  const totalPrice = 1000 * useCalculateTotalPrice();
+
+  // multiply totalPrice by 100 to convert  to kobo
+  const amount = totalPrice * 100;
 
   const componentProps = {
     email: "donattai1032@gmail.com",

@@ -1,14 +1,19 @@
-export type Product = {
-  id: number;
+export type ProductType = {
+  _id: string;
   price: string;
   image: string;
   title: string;
   category: string;
   description: string;
 };
+export interface IProduct {
+  page: string;
+  size: string;
+  products: ProductType[];
+}
 
 export interface CartItem {
-  id: number;
+  id: string;
   quantity: number;
 }
 

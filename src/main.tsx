@@ -11,7 +11,14 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import App from "./App.tsx";
 import "./index.css";
-import { Home } from "./pages/";
+import {
+  ForgotPassword,
+  Home,
+  Login,
+  Register,
+  ResetPassword,
+  VerifyEmail,
+} from "./pages/";
 import { Cart, Paystack, ProductDetails, Protected } from "./components/";
 
 const router = createBrowserRouter(
@@ -23,6 +30,17 @@ const router = createBrowserRouter(
         <Route path="payment" element={<Paystack />} />
       </Route>
       <Route path="product/:id" element={<ProductDetails />} />
+      <Route path="verify-email/:id/:token" element={<VerifyEmail />} />
+      <Route path="auth/login" element={<Login />} />
+      <Route path="auth/register" element={<Register />} />
+      <Route path="forgot-password" element={<ForgotPassword />} />
+      <Route path="reset-password/:id/:token" element={<ResetPassword />} />
+      <Route
+        path="*"
+        element={
+          <h2 className="min-h-[calc(100vh-128px)] text-2xl">Page not found</h2>
+        }
+      />
     </Route>
   )
 );
@@ -30,10 +48,7 @@ const router = createBrowserRouter(
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: Infinity,
-      refetchOnWindowFocus: false,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
+      staleTime: 5,
     },
   },
 });
