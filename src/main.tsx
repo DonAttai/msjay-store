@@ -19,7 +19,13 @@ import {
   ResetPassword,
   VerifyEmail,
 } from "./pages/";
-import { Cart, Paystack, ProductDetails, Protected } from "./components/";
+import {
+  Cart,
+  CheckoutPage,
+  Paystack,
+  ProductDetails,
+  Protected,
+} from "./components/";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -34,6 +40,7 @@ const router = createBrowserRouter(
       <Route path="auth/login" element={<Login />} />
       <Route path="auth/register" element={<Register />} />
       <Route path="forgot-password" element={<ForgotPassword />} />
+      <Route path="checkout" element={<CheckoutPage />} />
       <Route path="reset-password/:id/:token" element={<ResetPassword />} />
       <Route
         path="*"

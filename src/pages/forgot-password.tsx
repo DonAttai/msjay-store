@@ -1,14 +1,15 @@
 import { AxiosError } from "axios";
-import { useForgetPassword } from "../hooks/react-query-hooks";
+// import { useForgetPassword } from "../hooks/react-query-hooks";
+import { useForgetPassword } from "../hooks/useForgetPassword";
 import toast from "react-hot-toast";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../stores/user-store";
 
 export const ForgotPassword = () => {
+  const [email, setEmail] = useState("");
   const { isLoading, mutate } = useForgetPassword();
   const user = useUser();
-
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -18,13 +19,10 @@ export const ForgotPassword = () => {
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const formData = new FormData(e.currentTarget);
-    const email = formData.get("email") as string;
-
     mutate(
       { email },
       {
-        onSuccess: () => (e!.target as HTMLFormElement)!.reset(),
+        onSuccess: () => setEmail(""),
 
         onError: (error) => {
           if (error instanceof AxiosError) {
@@ -33,7 +31,6 @@ export const ForgotPassword = () => {
         },
       }
     );
-    e.currentTarget.reset();
   };
   return (
     <div className="min-h-[calc(100vh-128px)] flex items-center justify-center container mx-auto">
@@ -49,8 +46,9 @@ export const ForgotPassword = () => {
             <label htmlFor="email">Enter your email</label>
             <input
               type="email"
-              name="email"
+              value={email}
               placeholder="email"
+              onChange={(e) => setEmail(e.target.value)}
               id="email"
               className="shadow border p-2 rounded-md focus:outline-none w-full"
             />

@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
-import { useProducts } from "../hooks/react-query-hooks";
-import { CartItem } from "../types";
+import { useProducts } from "../hooks/useProducts";
+import { CartItem, ProductType } from "../types";
 
 interface CartStore {
   cart: CartItem[];
@@ -95,7 +95,9 @@ export const useCalculateTotalPrice = () => {
   const cart = useCart();
   const { data } = useProducts();
   return cart.reduce((total, cartItem) => {
-    const product = data?.products.find((item) => item._id === cartItem.id);
+    const product = data?.products.find(
+      (item: ProductType) => item._id === cartItem.id
+    );
     return total + (Number(product?.price) || 0) * cartItem.quantity;
   }, 0);
 };

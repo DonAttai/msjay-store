@@ -1,6 +1,7 @@
 import { useEffect, useReducer } from "react";
 import { useUser, useUserActions } from "../stores/user-store";
-import { useLogin } from "../hooks/react-query-hooks";
+// import { useLogin } from "../hooks/react-query-hooks";
+import { useLogin } from "../hooks/useLogin";
 import toast from "react-hot-toast";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
@@ -68,9 +69,9 @@ export const Login = () => {
             Ms Jay Store
           </h1>
           <h1 className=" text-xl font-semibold text-gray-400">Sign in</h1>
-          <div className="flex flex-col mb-3 w-full">
+          <div className="flex flex-col gap-1 mb-3 w-full">
             <label htmlFor="username" className="text-gray-400 font-semibold">
-              Username:
+              Username
             </label>
             <input
               type="text"
@@ -80,9 +81,18 @@ export const Login = () => {
               className="shadow border p-2 rounded-md focus:outline-none"
             />
           </div>
-          <div className="flex flex-col relative  mb-3 w-full">
-            <label htmlFor="password" className="text-gray-400 font-semibold">
-              Password:
+          <div className="flex flex-col relative gap-1 mb-3 w-full">
+            <label
+              htmlFor="password"
+              className="text-gray-400 font-semibold flex justify-between"
+            >
+              Password
+              <Link
+                to="/forgot-password"
+                className="font-base text-green-500 duration-300 underline hover:text-green-600 "
+              >
+                Forgot your password?
+              </Link>
             </label>
 
             <input
@@ -114,9 +124,12 @@ export const Login = () => {
               {isLoading ? "Wait..." : "Sign in"}
             </button>
           </div>
-          <Link to="/forgot-password" className="font-base text-green-500">
+          {/* <Link
+            to="/forgot-password"
+            className="font-base text-green-500 hover:text-green-700 duration-300"
+          >
             Forgot your password?
-          </Link>
+          </Link> */}
           <Link
             to="/auth/register"
             className="border border-green-400 text-center w-full text-green-400 py-2 text-lg rounded-full font-bold duration-300 hover:border-green-500 hover:text-green-600"

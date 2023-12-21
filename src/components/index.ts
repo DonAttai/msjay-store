@@ -7,3 +7,4 @@ export * from "./Footer";
 export * from "./Hero";
 export * from "./Paystack";
 export * from "./Protected";
+export * from "./CheckoutPage";

@@ -1,5 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useResetPassword } from "../hooks/react-query-hooks";
+// import { useResetPassword } from "../hooks/react-query-hooks";
+import { useResetPassword } from "../hooks/useResetPassword";
 import toast from "react-hot-toast";
 import { AxiosError } from "axios";
 import { useEffect } from "react";

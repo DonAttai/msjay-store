@@ -4,6 +4,8 @@ import { useCartActions } from "../stores/cart-store";
 import { useUserActions, useUser } from "../stores/user-store";
 import { Link, NavLink } from "react-router-dom";
 import { useReducer } from "react";
+import { CiSettings } from "react-icons/ci";
+import { CiLogout } from "react-icons/ci";
 // import { useReducer } from "react";
 // import { Cart } from ".";
 export const Header = () => {
@@ -46,20 +48,33 @@ export const Header = () => {
               <div className=" flex items-center gap-4 ">
                 <button onClick={toggleDropdown} className="flex gap-2">
                   <RxAvatar className="text-white text-3xl cursor-pointer" />
-                  <span>{capitalizeFirstLetter(user.username)}</span>
                 </button>
                 {isOpen && (
-                  <ul className=" bg-white flex font flex-col py-2 px-4 border shadow-md absolute right-5 -bottom-14 text-black">
-                    <li
-                      onClick={() => {
-                        logOut();
-                        toggleDropdown();
-                      }}
-                      className="cursor-pointer text-base font-normal "
-                    >
-                      Logout
-                    </li>
-                  </ul>
+                  <div className="w-2/3  absolute bg-red-500 -bottom-40 right-10 md:w-1/3">
+                    <ul className="h-100 bg-white flex text-xl font-normal flex-col py-4 px-4 border shadow-md text-black">
+                      <li className="font-medium text-2xl bto">
+                        {capitalizeFirstLetter(user.username)}
+                      </li>
+                      <hr className="w-full mb-2" />
+                      <li
+                        className="cursor-pointer flex gap-2 items-center mb-3"
+                        onClick={() => toggleDropdown()}
+                      >
+                        <CiSettings />
+                        Settings
+                      </li>
+                      <li
+                        onClick={() => {
+                          logOut();
+                          toggleDropdown();
+                        }}
+                        className="cursor-pointer flex items-center gap-2 mb-3"
+                      >
+                        <CiLogout />
+                        Logout
+                      </li>
+                    </ul>
+                  </div>
                 )}
               </div>
             )}

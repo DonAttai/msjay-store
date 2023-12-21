@@ -1,4 +1,4 @@
-import { useProducts } from "../hooks/react-query-hooks";
+import { useProducts } from "../hooks/useProducts";
 import { Hero, StoreItem } from "../components";
 import { ProductType } from "../types";
 

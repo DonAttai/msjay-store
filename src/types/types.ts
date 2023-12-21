@@ -21,3 +21,12 @@ export interface User {
   email: string;
   name: string;
 }
+
+export type UserType = {
+  _id: string;
+  email: string;
+  username: string;
+  isVerified: boolean;
+  roles: string[];
+  accessToken: string;
+};

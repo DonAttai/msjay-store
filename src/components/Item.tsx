@@ -1,4 +1,5 @@
-import { useProducts } from "../hooks/react-query-hooks";
+// import { useProducts } from "../hooks/react-query-hooks";
+import { useProducts } from "../hooks/useProducts";
 import { CartItem } from "../types";
 import { currencyFormatter } from "../utils/currency-formatter";
 import { useCartActions } from "../stores/cart-store";
@@ -38,7 +39,7 @@ export const Item = ({ id, quantity }: CartItem) => {
                 <p>{currencyFormatter(Number(product?.price))}</p>
               </div>
             </div>
-            <p className="text-2xl font-semibold">
+            <p className="text-2xl font-semibold hidden md:block">
               {currencyFormatter(amount)}
             </p>
           </div>

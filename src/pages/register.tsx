@@ -1,6 +1,7 @@
 import { useEffect, useReducer } from "react";
 import toast from "react-hot-toast";
-import { useRegister } from "../hooks/react-query-hooks";
+// import { useRegister } from "../hooks/react-query-hooks";
+import { useRegister } from "../hooks/useRegister";
 
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AxiosError } from "axios";

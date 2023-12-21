@@ -15,7 +15,7 @@ import { useUser } from "../stores/user-store";
 import { Item } from ".";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaShoppingCart } from "react-icons/fa";
-import { UserType } from "../hooks/react-query-hooks";
+import { UserType } from "../types";
 import toast from "react-hot-toast";
 
 //import modal
@@ -33,7 +33,7 @@ export const Cart = () => {
 
   const handlePaymentClick = () => {
     if (user && user.isVerified) {
-      navigate("/payment");
+      navigate("/checkout");
     } else if (user && !user.isVerified) {
       toast("Verify your account to checkout");
     } else {
@@ -53,11 +53,11 @@ export const Cart = () => {
 
   return (
     <>
-      <section className=" bg-gray-100 min-h-screen p-4">
-        <div>
+      <section className=" bg-gray-100 pt-4 min-h-screen md:p-4">
+        <div className="mx-2 md:mx-0">
           {cart.length ? (
-            <section className="flex justify-between container mx-auto gap-5 ">
-              <div className="bg-white shadow-md rounded-md w-3/4">
+            <section className="flex flex-col justify-between container items-center mx-auto gap-5 md:flex-row md:items-start ">
+              <div className="bg-white shadow-md rounded-md  md:w-3/4">
                 <div className="flex flex-col justify-between gap-3 pl-5 mt-4">
                   <h3 className="text-xl font-semibold">
                     Cart ({getCartQuantity()})
@@ -69,15 +69,15 @@ export const Cart = () => {
                   ))}
                 </div>
               </div>
-              <div className="flex flex-col w-1/4 bg-white shadow-md rounded-md h-fit">
+              <div className="flex flex-col w-full bg-white shadow-md py-2 rounded-md h-fit md:w-1/4">
                 <div className="mb-2">
                   <h3 className="font-semibold p-2">CART SUMMARY</h3>
                   <hr className="w-full" />
                 </div>
                 <div className="mb-2">
-                  <div className="flex flex-wrap justify-between p-2 font-medium text-lg">
+                  <div className="flex flex-col flex-wrap justify-between p-2 font-medium text-lg md:flex-row">
                     <p>Subtotal</p>
-                    <p className="text-2xl">{currencyFormatter(totalPrice)}</p>
+                    <p className="text-2xl ">{currencyFormatter(totalPrice)}</p>
                   </div>
                   <hr className="w-full" />
                 </div>

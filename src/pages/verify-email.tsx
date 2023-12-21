@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useVerifyEmail } from "../hooks/react-query-hooks";
+import { useVerifyEmail } from "../hooks/useVerifyEmail";
 import { useUser, useUserActions } from "../stores/user-store";
 import { useEffect } from "react";
 import toast from "react-hot-toast";

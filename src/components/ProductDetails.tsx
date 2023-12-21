@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useProducts } from "../hooks/react-query-hooks";
+import { useProducts } from "../hooks/useProducts";
 import { currencyFormatter } from "../utils/currency-formatter";
 import { useCartActions, useCart } from "../stores/cart-store";
 import toast from "react-hot-toast";
