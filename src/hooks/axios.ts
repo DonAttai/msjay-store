@@ -7,7 +7,6 @@ if (import.meta.env.VITE_NODE_ENV === "development") {
 } else {
   API = import.meta.env.VITE_API_URL;
 }
-console.log(API);
 
 const axiosInstance = () => {
   return axios.create({

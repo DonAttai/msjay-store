@@ -59,7 +59,7 @@ export const Register = () => {
       <div className="w-full flex items-center justify-center">
         <form
           onSubmit={onSubmit}
-          className="flex flex-col w-full px-2 mx-2 items-center shadow-md border border-gray-300 rounded-md py-10 gap-4 md:px-4 md:mx-0 md:w-1/3 "
+          className="flex flex-col w-full px-2 mx-4 my-8 items-center shadow-md border border-gray-300 rounded-md py-10 gap-4 md:my-0 md:px-4 md:mx-0 md:w-1/3 "
         >
           <h1 className=" text-xl font-semibold text-green-500">
             Ms Jay Store
