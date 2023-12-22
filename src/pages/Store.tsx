@@ -3,7 +3,7 @@ import { Hero, StoreItem } from "../components";
 import { ProductType } from "../types";
 
 export const Home = () => {
-  const { data, isLoading } = useProducts();
+  const { data, isLoading, isSuccess } = useProducts();
 
   if (isLoading) {
     return (
@@ -18,8 +18,8 @@ export const Home = () => {
       <Hero />
       <section className="container mx-auto p-4 min-h-screen">
         <div className="flex flex-wrap -m-4">
-          {data &&
-            data.products.map((product: ProductType) => (
+          {isSuccess &&
+            data?.products?.map((product: ProductType) => (
               <StoreItem key={product?._id} {...product} />
             ))}
         </div>

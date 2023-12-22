@@ -1,6 +1,5 @@
 import { create } from "zustand";
 import { UserType } from "../types";
-// import { useUserQuery } from "../hooks/react-query-hooks";
 
 interface UserStore {
   user: UserType | null;
@@ -14,7 +13,6 @@ interface UserStore {
 const userInfo: UserType = JSON.parse(
   localStorage.getItem("user-credentials") as string
 );
-// const url = import.meta.env.VITE_API_URL;
 
 const useUserStore = create<UserStore>()((set) => ({
   user: userInfo ? userInfo : null,

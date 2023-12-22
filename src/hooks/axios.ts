@@ -1,11 +1,13 @@
 import axios from "axios";
 import { UserType } from "../types";
+
 let API: string;
 if (import.meta.env.VITE_NODE_ENV === "development") {
   API = import.meta.env.VITE_LOCAL_API_URL;
 } else {
   API = import.meta.env.VITE_API_URL;
 }
+console.log(API);
 
 const axiosInstance = () => {
   return axios.create({
