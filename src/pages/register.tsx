@@ -11,12 +11,11 @@ import { useUser } from "../stores/user-store";
 export const Register = () => {
   const { isLoading, mutate } = useRegister();
 
-  const user = useUser();
-
   const [isPasswordShown, toggleVisibility] = useReducer(
     (prevState) => !prevState,
     false
   );
+  const user = useUser();
 
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";

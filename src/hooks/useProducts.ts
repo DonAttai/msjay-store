@@ -1,13 +1,26 @@
-import { IProduct } from "../types";
 import axiosInstance from "./axios";
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
+
+// export const useProducts = () => {
+//   return useQuery({
+//     queryKey: ["products"],
+//     queryFn: () =>
+//       axiosInstance()
+//         .get<IProduct>(`/products`)
+//         .then((res) => res.data),
+//   });
+// };
 
 export const useProducts = () => {
-  return useQuery({
+  return useInfiniteQuery({
     queryKey: ["products"],
-    queryFn: () =>
+    queryFn: ({ pageParam = 1 }) =>
       axiosInstance()
-        .get<IProduct>(`/products`)
+        .get(`/products?size=8&page=${pageParam}`)
         .then((res) => res.data),
+    getNextPageParam: (lastPage, pages) => {
+      const nextPage = pages.length + 1;
+      return lastPage.products.length ? nextPage : undefined;
+    },
   });
 };

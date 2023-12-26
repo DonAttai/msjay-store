@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { UserType } from "../hooks/react-query-hooks";
+import { UserType } from "../types";
 // import { useUserQuery } from "../hooks/react-query-hooks";
 
 interface UserStore {

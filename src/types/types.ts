@@ -6,10 +6,11 @@ export type ProductType = {
   category: string;
   description: string;
 };
+
 export interface IProduct {
   page: string;
   size: string;
-  products: ProductType[];
+  pages: ProductType[];
 }
 
 export interface CartItem {
