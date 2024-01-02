@@ -78,6 +78,7 @@ export const Login = () => {
               placeholder="username"
               id="username"
               className="shadow border p-2 rounded-md focus:outline-none"
+              required
             />
           </div>
           <div className="flex flex-col relative gap-1 mb-3 w-full">
@@ -100,6 +101,7 @@ export const Login = () => {
               id="password"
               placeholder="password"
               className="shadow border p-2 rounded-md focus:outline-none"
+              required
             />
 
             {isPasswordShown ? (
