@@ -1,5 +1,6 @@
 import axios from "axios";
 import { UserType } from "../types";
+import toast from "react-hot-toast";
 
 let API: string;
 if (import.meta.env.VITE_NODE_ENV === "development") {
@@ -7,6 +8,8 @@ if (import.meta.env.VITE_NODE_ENV === "development") {
 } else {
   API = import.meta.env.VITE_API_URL;
 }
+
+console.log(API);
 
 const axiosInstance = () => {
   return axios.create({
@@ -38,11 +41,17 @@ axiosInstance().interceptors.response.use(
   },
 
   async (error) => {
-    if (error.response && error.response.status === 401) {
-      localStorage.removeItem("user-credentials");
-      window.location.reload();
-      return;
+    const status = error.response.status ?? null;
+    const user = localStorage.getItem("user-credentials");
+    if (status === 401) {
+      if (user) {
+        localStorage.removeItem("user-credentials");
+        window.location.href = "/login";
+        toast.error("Your session has expired! Log in again");
+        return;
+      }
     }
+    return Promise.reject(error);
   }
 );
 export default axiosInstance;

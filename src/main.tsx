@@ -29,25 +29,29 @@ import {
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<App />}>
-      <Route index element={<Home />} />
-      <Route path="cart" element={<Cart />} />
-      <Route element={<Protected />}>
-        <Route path="payment" element={<Paystack />} />
+    <Route>
+      <Route path="/auth/login" element={<Login />} />
+      <Route path="/auth/register" element={<Register />} />
+      <Route path="/" element={<App />}>
+        <Route index element={<Home />} />
+        <Route path="cart" element={<Cart />} />
+        <Route element={<Protected />}>
+          <Route path="payment" element={<Paystack />} />
+        </Route>
+        <Route path="product/:id" element={<ProductDetails />} />
+        <Route path="verify-email/:id/:token" element={<VerifyEmail />} />
+        <Route path="forgot-password" element={<ForgotPassword />} />
+        <Route path="checkout" element={<CheckoutPage />} />
+        <Route path="reset-password/:id/:token" element={<ResetPassword />} />
+        <Route
+          path="*"
+          element={
+            <h2 className="min-h-[calc(100vh-128px)] text-2xl">
+              Page not found
+            </h2>
+          }
+        />
       </Route>
-      <Route path="product/:id" element={<ProductDetails />} />
-      <Route path="verify-email/:id/:token" element={<VerifyEmail />} />
-      <Route path="auth/login" element={<Login />} />
-      <Route path="auth/register" element={<Register />} />
-      <Route path="forgot-password" element={<ForgotPassword />} />
-      <Route path="checkout" element={<CheckoutPage />} />
-      <Route path="reset-password/:id/:token" element={<ResetPassword />} />
-      <Route
-        path="*"
-        element={
-          <h2 className="min-h-[calc(100vh-128px)] text-2xl">Page not found</h2>
-        }
-      />
     </Route>
   )
 );

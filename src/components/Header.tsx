@@ -4,8 +4,7 @@ import { useCartActions } from "../stores/cart-store";
 import { useUserActions, useUser } from "../stores/user-store";
 import { Link, NavLink } from "react-router-dom";
 import { useReducer } from "react";
-import { CiSettings } from "react-icons/ci";
-import { CiLogout } from "react-icons/ci";
+import { CiSettings, CiLogout } from "react-icons/ci";
 // import { useReducer } from "react";
 // import { Cart } from ".";
 export const Header = () => {
@@ -50,9 +49,9 @@ export const Header = () => {
                   <RxAvatar className="text-white text-3xl cursor-pointer" />
                 </button>
                 {isOpen && (
-                  <div className="w-2/3  absolute bg-red-500 -bottom-40 right-10 md:w-1/3">
+                  <div className="w-2/3  absolute -bottom-40 right-10 md:w-1/3">
                     <ul className="h-100 bg-white flex text-xl font-normal flex-col py-4 px-4 border shadow-md text-black">
-                      <li className="font-medium text-2xl bto">
+                      <li className="font-medium text-2xl">
                         {capitalizeFirstLetter(user.username)}
                       </li>
                       <hr className="w-full mb-2" />
