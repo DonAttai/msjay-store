@@ -19,7 +19,7 @@ export const Home = () => {
       <section className="container mx-auto p-4 min-h-screen">
         <div className="flex flex-wrap -m-4">
           {isSuccess &&
-            data?.products?.map((product: ProductType) => (
+            data.products.map((product: ProductType) => (
               <StoreItem key={product?._id} {...product} />
             ))}
         </div>

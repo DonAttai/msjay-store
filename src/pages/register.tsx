@@ -41,8 +41,8 @@ export const Register = () => {
       { ...userData },
       {
         onSuccess: () => {
-          (e.target as HTMLFormElement)!.reset();
-          navigate("/auth/login");
+          (e.target as HTMLFormElement).reset();
+          navigate("/");
         },
         onError: (error) => {
           if (error instanceof AxiosError) {

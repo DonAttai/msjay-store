@@ -2,18 +2,16 @@ import axios from "axios";
 import { UserType } from "../types";
 import toast from "react-hot-toast";
 
-let API: string;
+let baseURL: string;
 if (import.meta.env.VITE_NODE_ENV === "development") {
-  API = import.meta.env.VITE_LOCAL_API_URL;
+  baseURL = import.meta.env.VITE_LOCAL_API_URL;
 } else {
-  API = import.meta.env.VITE_API_URL;
+  baseURL = import.meta.env.VITE_API_URL;
 }
-
-console.log(API);
 
 const axiosInstance = () => {
   return axios.create({
-    baseURL: API,
+    baseURL,
     headers: {
       "Content-Type": "application/json",
     },

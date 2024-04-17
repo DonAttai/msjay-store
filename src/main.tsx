@@ -22,9 +22,9 @@ import {
 import {
   Cart,
   CheckoutPage,
-  Paystack,
   ProductDetails,
   Protected,
+  PayWithPaystack,
 } from "./components/";
 import { Toaster } from "react-hot-toast";
 
@@ -33,17 +33,17 @@ const router = createBrowserRouter(
     <Route>
       <Route path="/auth/login" element={<Login />} />
       <Route path="/auth/register" element={<Register />} />
+      <Route path="verify-email/:id/:token" element={<VerifyEmail />} />
+      <Route path="forgot-password" element={<ForgotPassword />} />
+      <Route path="reset-password/:id/:token" element={<ResetPassword />} />
       <Route path="/" element={<App />}>
         <Route index element={<Home />} />
         <Route path="cart" element={<Cart />} />
         <Route element={<Protected />}>
-          <Route path="payment" element={<Paystack />} />
+          <Route path="payment" element={<PayWithPaystack />} />
         </Route>
         <Route path="product/:id" element={<ProductDetails />} />
-        <Route path="verify-email/:id/:token" element={<VerifyEmail />} />
-        <Route path="forgot-password" element={<ForgotPassword />} />
         <Route path="checkout" element={<CheckoutPage />} />
-        <Route path="reset-password/:id/:token" element={<ResetPassword />} />
         <Route
           path="*"
           element={

@@ -10,7 +10,6 @@ export const VerifyEmail = () => {
   const { data, isLoading, mutate } = useVerifyEmail();
   const { setCredentials } = useUserActions();
   const user = useUser();
-  console.log(data);
 
   useEffect(() => {
     if (data) {
@@ -27,7 +26,7 @@ export const VerifyEmail = () => {
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     mutate(
-      { id: id!, token: token! },
+      { id: id as string, token: token as string },
       {
         onError: (error) => {
           if (error instanceof AxiosError) {
@@ -38,7 +37,8 @@ export const VerifyEmail = () => {
     );
   };
   return (
-    <div className=" min-h-[calc(100vh-128px)] flex justify-center items-center">
+    <div className=" min-h-[calc(100vh-128px)] flex flex-col gap-8 justify-center items-center">
+      <h2 className="text-2xl text-center">Msjay Store</h2>
       <form onSubmit={onSubmit}>
         <button
           type="submit"

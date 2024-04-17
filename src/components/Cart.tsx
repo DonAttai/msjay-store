@@ -30,7 +30,6 @@ export const Cart = () => {
   const cart = useCart();
 
   const totalPrice = useCalculateTotalPrice();
-
   const handlePaymentClick = () => {
     if (user && user.isVerified) {
       navigate("/checkout");
