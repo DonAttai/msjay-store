@@ -12,6 +12,7 @@ if (import.meta.env.VITE_NODE_ENV === "development") {
 const axiosInstance = () => {
   return axios.create({
     baseURL,
+    withCredentials: true,
     headers: {
       "Content-Type": "application/json",
     },

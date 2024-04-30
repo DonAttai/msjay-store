@@ -1,18 +1,25 @@
-import { useCart, useCartActions } from "../stores/cart-store";
 import { currencyFormatter } from "../utils/currency-formatter";
 import { ProductType } from "../types";
 import { Link } from "react-router-dom";
-import toast from "react-hot-toast";
+import {
+  useAddToCart,
+  useCartItemQuantity,
+  useDecreaseCartItemQuantity,
+  useRemoveItemFromCart,
+} from "../hooks/useCart";
 
-export const StoreItem = ({ _id, title, price, image }: ProductType) => {
-  useCart();
-  const {
-    increaseItemQuantity,
-    decreaseItemQuantity,
-    getItemQuantity,
-    removeItemFromCart,
-  } = useCartActions();
-  const itemQuantity = getItemQuantity(_id) || 0;
+export const StoreItem = ({
+  _id: productId,
+  title,
+  price,
+  image,
+}: ProductType) => {
+  const { mutate, isLoading } = useAddToCart();
+  const cartItemQuantity = useCartItemQuantity(productId);
+  const { mutate: decreaseItemQuantity } =
+    useDecreaseCartItemQuantity(productId);
+  const { mutate: removeItemFromCart } = useRemoveItemFromCart();
+  // const { removeItemFromCart } = useCartActions();
 
   return (
     <div className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-4">
@@ -24,58 +31,49 @@ export const StoreItem = ({ _id, title, price, image }: ProductType) => {
           <img src={image} width={200} alt={title} />
         </figure>
         <div>
-          {itemQuantity ? (
+          {cartItemQuantity ? (
             <div className="flex flex-col gap-3 items-center">
               <div className="flex">
                 <button
                   className="border  bg-green-500 text-white rounded-md shadow px-1 mx-2 w-8 font-extrabold text-2xl hover:bg-green-700"
-                  onClick={() => {
-                    toast.success("Item quantity has been updated!");
-                    decreaseItemQuantity(_id);
-                  }}
+                  onClick={() => decreaseItemQuantity()}
                 >
                   -
                 </button>
                 <p className="text-sm  text-mute">
-                  (<span className="font-bold">{itemQuantity}</span> item(s)
-                  added)
+                  (<span className="font-bold">{cartItemQuantity}</span>
+                  {cartItemQuantity > 1 ? " quantities" : " quantity"} in cart)
                 </p>
                 <button
                   className="border  bg-green-500 text-white mx-2 rounded-md shadow px-1 w-8 text-2xl font-extrabold hover:bg-green-800"
-                  onClick={() => {
-                    increaseItemQuantity(_id);
-                    toast.success("Product added successfully!");
-                  }}
+                  onClick={() => mutate({ productId })}
                 >
                   +
                 </button>
               </div>
               <button
                 className="bg-green-500 p-2 rounded-lg text-white font-semibold hover:bg-green-700"
-                onClick={() => {
-                  removeItemFromCart(_id);
-                  toast.success("Item was removed from cart!");
-                }}
+                onClick={() => removeItemFromCart({ productId })}
               >
                 REMOVE
               </button>
             </div>
           ) : (
             <button
-              className="border  bg-green-500 opacity-0 text-white shadow font-semibold p-1 rounded-lg transition duration-300 group-hover:opacity-100 hover:bg-green-700"
-              onClick={() => {
-                increaseItemQuantity(_id);
-                toast.success("Product added successfully!");
-              }}
+              className={`border  bg-green-500 opacity-0 text-white shadow font-semibold p-1 rounded-lg transition duration-300 group-hover:opacity-100 hover:bg-green-700 ${
+                isLoading ? "bg-green-200 cursor-not-allowed" : ""
+              }`}
+              disabled={isLoading}
+              onClick={() => mutate({ productId })}
             >
-              ADD TO CART
+              {isLoading ? "adding to cart..." : "ADD TO CART"}
             </button>
           )}
         </div>
       </div>
       <div className="text-center mt-5">
         <Link
-          to={`/product/${_id}`}
+          to={`/product/${productId}`}
           className="p-2 hover:underline uppercase font-semibold"
         >
           {title}

@@ -1,21 +1,23 @@
 import { useParams } from "react-router-dom";
 import { useProducts } from "../hooks/useProducts";
 import { currencyFormatter } from "../utils/currency-formatter";
-import { useCartActions, useCart } from "../stores/cart-store";
-import toast from "react-hot-toast";
+import {
+  useAddToCart,
+  useCartItemQuantity,
+  useDecreaseCartItemQuantity,
+  useRemoveItemFromCart,
+} from "../hooks/useCart";
 export const ProductDetails = () => {
-  useCart();
-  const {
-    increaseItemQuantity,
-    getItemQuantity,
-    decreaseItemQuantity,
-    removeItemFromCart,
-  } = useCartActions();
   const { data } = useProducts();
-  const { id } = useParams();
+  const { id: productId } = useParams();
 
-  const product = data?.products?.find((item) => item._id === id);
-  const itemQuantity = getItemQuantity(id!);
+  const { mutate: addTocart } = useAddToCart();
+  const product = data?.products?.find((item) => item._id === productId);
+  const itemQuantity = useCartItemQuantity(productId as string);
+  const { mutate: decreaseItemQuantity } = useDecreaseCartItemQuantity(
+    productId as string
+  );
+  const { mutate: removeItemFromCart } = useRemoveItemFromCart();
 
   return (
     <section className="min-h-[calc(100vh-128px)] flex items-center justify-center container mx-auto">
@@ -45,21 +47,19 @@ export const ProductDetails = () => {
                     <button
                       className="border bg-green-500 text-white rounded-md shadow-md px-1 mx-2 w-8 text-2xl duration-300 hover:bg-green-700"
                       onClick={() => {
-                        decreaseItemQuantity(id!);
-                        toast.success("Item quantity has been updated!");
+                        decreaseItemQuantity();
                       }}
                     >
                       -
                     </button>
                     <p className="text-sm  text-mute">
-                      (<span className="font-bold">{itemQuantity}</span> item(s)
-                      added)
+                      (<span className="font-bold">{itemQuantity}</span>
+                      {itemQuantity > 1 ? " quantities" : " quantity"} in cart)
                     </p>
                     <button
                       className="border bg-green-500 text-white rounded-md mx-2 shadow-md px-1 w-8 text-2xl duration-300 hover:bg-green-700"
                       onClick={() => {
-                        increaseItemQuantity(id!);
-                        toast.success("Product added successfully!");
+                        addTocart({ productId: productId as string });
                       }}
                     >
                       +
@@ -69,8 +69,7 @@ export const ProductDetails = () => {
                     <button
                       className="bg-green-500  py-2 px-4 rounded-lg text-white ml-12 font-semibold duration-300 hover:bg-green-700"
                       onClick={() => {
-                        removeItemFromCart(id!);
-                        toast.success("Item was removed from cart!");
+                        removeItemFromCart({ productId: productId as string });
                       }}
                     >
                       REMOVE
@@ -80,9 +79,7 @@ export const ProductDetails = () => {
               ) : (
                 <button
                   className="p-2 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-700 hover:text-white"
-                  onClick={() => {
-                    increaseItemQuantity(product?._id as string);
-                  }}
+                  onClick={() => addTocart({ productId: productId as string })}
                 >
                   ADD TO CART
                 </button>

@@ -14,7 +14,7 @@ export const ForgotPassword = () => {
 
   useEffect(() => {
     if (user) navigate("/");
-  });
+  }, [user]);
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

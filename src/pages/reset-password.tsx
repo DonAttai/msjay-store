@@ -1,5 +1,4 @@
 import { useNavigate, useParams } from "react-router-dom";
-// import { useResetPassword } from "../hooks/react-query-hooks";
 import { useResetPassword } from "../hooks/useResetPassword";
 import toast from "react-hot-toast";
 import { AxiosError } from "axios";
@@ -9,14 +8,18 @@ import { useUser } from "../stores/user-store";
 export const ResetPassword = () => {
   const { token, id } = useParams();
   const [password, setPassword] = useState("");
-  const { mutate, isLoading } = useResetPassword();
+  const { data, mutate, isLoading } = useResetPassword();
   const user = useUser();
 
   const navigate = useNavigate();
 
   useEffect(() => {
     if (user) navigate("/");
-  });
+  }, [user]);
+
+  useEffect(() => {
+    if (data) navigate("/auth/login");
+  }, []);
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

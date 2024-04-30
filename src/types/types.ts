@@ -11,10 +11,14 @@ export interface IProduct {
   size: string;
   products: ProductType[];
 }
-
 export interface CartItem {
-  id: string;
+  productId: string;
   quantity: number;
+}
+export interface Cart {
+  _id: string;
+  userId: string;
+  products: CartItem[];
 }
 
 export interface User {

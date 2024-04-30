@@ -1,4 +1,3 @@
-import toast from "react-hot-toast";
 import axiosInstance from "./axios";
 import { useMutation } from "@tanstack/react-query";
 
@@ -12,8 +11,5 @@ export const useRegister = () => {
       axiosInstance()
         .post("/auth/register", credentials)
         .then((res) => res.data),
-    onSuccess: (data) => {
-      toast.success(data.message);
-    },
   });
 };

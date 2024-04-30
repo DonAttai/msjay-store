@@ -1,22 +1,26 @@
-// import { useProducts } from "../hooks/react-query-hooks";
 import { useProducts } from "../hooks/useProducts";
 import { CartItem } from "../types";
 import { currencyFormatter } from "../utils/currency-formatter";
-import { useCartActions } from "../stores/cart-store";
 import { AiOutlineDelete } from "react-icons/ai";
 import { Link } from "react-router-dom";
+import {
+  useAddToCart,
+  useCartItemQuantity,
+  useDecreaseCartItemQuantity,
+  useRemoveItemFromCart,
+} from "../hooks/useCart";
 
-export const Item = ({ id, quantity }: CartItem) => {
+export const Item = ({ productId, quantity }: CartItem) => {
   const { data } = useProducts();
+  const cartItemQuantity = useCartItemQuantity(productId);
+  const { mutate: increaseItemQuantity } = useAddToCart();
+  const { mutate: decreaseItemQuantity } =
+    useDecreaseCartItemQuantity(productId);
+  const { mutate: removeItemFromCart } = useRemoveItemFromCart();
 
-  const {
-    getItemQuantity,
-    removeItemFromCart,
-    increaseItemQuantity,
-    decreaseItemQuantity,
-  } = useCartActions();
+  // const { removeItemFromCart } = useCartActions();
 
-  const product = data?.products?.find((product) => product._id === id);
+  const product = data?.products?.find((product) => product._id === productId);
   const amount = Number(product?.price) * quantity;
 
   return (
@@ -49,7 +53,7 @@ export const Item = ({ id, quantity }: CartItem) => {
               <AiOutlineDelete size="1.8em" />
               <button
                 className=" rounded-md text-lg px-2 font-semibold"
-                onClick={() => removeItemFromCart(id)}
+                onClick={() => removeItemFromCart({ productId })}
               >
                 Remove
               </button>
@@ -57,14 +61,14 @@ export const Item = ({ id, quantity }: CartItem) => {
             <div className="flex gap-4">
               <button
                 className="border bg-green-500 shadow-md text-white mx-2 px-1 rounded-md w-8 text-2xl duration-300 hover:bg-green-700"
-                onClick={() => decreaseItemQuantity(id)}
+                onClick={() => decreaseItemQuantity()}
               >
                 -
               </button>
-              <p>{getItemQuantity(id)}</p>
+              <p>{cartItemQuantity}</p>
               <button
                 className="border bg-green-500 text-white mx-2 shadow-md px-1 w-8 rounded-md text-2xl duration-300 hover:bg-green-700"
-                onClick={() => increaseItemQuantity(id)}
+                onClick={() => increaseItemQuantity({ productId })}
               >
                 +
               </button>

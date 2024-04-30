@@ -19,6 +19,8 @@
     "react-icons": "^4.10.1",
     "react-paystack": "^4.0.3",
     "react-router-dom": "^6.15.0",
+    "zod": "^3.23.3",
+    "zod-validation-error": "^3.2.0",
     "zustand": "^4.4.1"
   },
   "devDependencies": {

@@ -1,9 +1,10 @@
 // import cart-store hooks
+// import { useCalculateTotalPrice } from "../stores/cart-store";
 import {
-  useCart,
-  useCartActions,
   useCalculateTotalPrice,
-} from "../stores/cart-store";
+  useCart,
+  useCartQuantity,
+} from "../hooks/useCart";
 
 //import currencYFormatter
 import { currencyFormatter } from "../utils/currency-formatter";
@@ -21,13 +22,12 @@ import toast from "react-hot-toast";
 //import modal
 
 export const Cart = () => {
-  const { getCartQuantity } = useCartActions();
+  const { data: cart } = useCart();
+  const cartQuantity = useCartQuantity();
 
   const user = useUser() as UserType;
   const navigate = useNavigate();
   const location = useLocation();
-
-  const cart = useCart();
 
   const totalPrice = useCalculateTotalPrice();
   const handlePaymentClick = () => {
@@ -43,7 +43,7 @@ export const Cart = () => {
       toast.custom(
         <div className=" flex justify-center items-center bg-white px-2 py-4 rounded-md shadow-md md:w-1/3 sm:w-2/3">
           <span className="text-green-500 text-xl">
-            👍 You have to login to checkout
+            You have to login to checkout
           </span>
         </div>
       );
@@ -54,17 +54,17 @@ export const Cart = () => {
     <>
       <section className=" bg-gray-100 pt-4 min-h-screen md:p-4">
         <div className="mx-2 md:mx-0">
-          {cart.length ? (
+          {cart?.products.length ? (
             <section className="flex flex-col justify-between container items-center mx-auto gap-5 md:flex-row md:items-start ">
               <div className="bg-white shadow-md rounded-md  md:w-3/4">
                 <div className="flex flex-col justify-between gap-3 pl-5 mt-4">
                   <h3 className="text-xl font-semibold">
-                    Cart ({getCartQuantity()})
+                    Cart ({cartQuantity})
                   </h3>
                 </div>
                 <div>
-                  {cart.map((cartItem) => (
-                    <Item key={cartItem.id} {...cartItem} />
+                  {cart.products.map((cartItem) => (
+                    <Item key={cartItem.productId} {...cartItem} />
                   ))}
                 </div>
               </div>
@@ -76,7 +76,9 @@ export const Cart = () => {
                 <div className="mb-2">
                   <div className="flex flex-col flex-wrap justify-between p-2 font-medium text-lg md:flex-row">
                     <p>Subtotal</p>
-                    <p className="text-2xl ">{currencyFormatter(totalPrice)}</p>
+                    <p className="text-2xl ">
+                      {currencyFormatter(totalPrice as number)}
+                    </p>
                   </div>
                   <hr className="w-full" />
                 </div>

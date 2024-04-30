@@ -1,20 +1,20 @@
 import { TiShoppingCart } from "react-icons/ti";
 import { RxAvatar } from "react-icons/rx";
-import { useCartActions } from "../stores/cart-store";
 import { useUserActions, useUser } from "../stores/user-store";
 import { Link, NavLink } from "react-router-dom";
 import { useReducer } from "react";
 import { CiSettings, CiLogout } from "react-icons/ci";
+import { useCartQuantity } from "../hooks/useCart";
 // import { useReducer } from "react";
 // import { Cart } from ".";
 export const Header = () => {
-  const { getCartQuantity } = useCartActions();
+  const user = useUser();
+  const cartQuantity = useCartQuantity();
 
   const [isOpen, toggleDropdown] = useReducer((prevState) => !prevState, false);
   const { logOut } = useUserActions();
-  const user = useUser();
 
-  const cartQuantity = getCartQuantity() || 0;
+  // const cartQuantity = getCartQuantity() || 0;
 
   function capitalizeFirstLetter(str: string) {
     return str.charAt(0).toUpperCase() + str.slice(1);
@@ -33,7 +33,7 @@ export const Header = () => {
                 <TiShoppingCart size="1.8em" />
               </Link>
               <span className=" rounded-full text-base font-medium px-1">
-                ({cartQuantity})
+                ({cartQuantity || 0})
               </span>
             </div>
             {!user ? (

@@ -1,22 +1,41 @@
 import { useMutation } from "@tanstack/react-query";
 import axiosInstance from "../hooks/axios";
-import { useCalculateTotalPrice } from "../stores/cart-store";
 import { useUser } from "../stores/user-store";
+import { useCalculateTotalPrice } from "../hooks/useCart";
+import { useEffect } from "react";
+import { AxiosError } from "axios";
+import toast from "react-hot-toast";
 
 export const PayWithPaystack = () => {
-  const amount = 1000 * useCalculateTotalPrice();
+  const totalPrice = useCalculateTotalPrice();
+  const amount = 1000 * totalPrice!;
   const user = useUser();
-  const { isLoading, mutate } = useMutation({
+  const {
+    data: payload,
+    isLoading,
+    mutate,
+    isError,
+    error,
+    isSuccess,
+  } = useMutation({
     mutationFn: async (userData: { amount: number; email: string }) => {
-      const res = await axiosInstance().post("/payment", userData);
+      const res = await axiosInstance().post("/paystack/initialize", userData);
       return res.data;
     },
+  });
 
-    onSuccess: (payload) => {
+  useEffect(() => {
+    if (isError) {
+      if (error instanceof AxiosError) {
+        const errorMessage = error.response?.data.message || error.message;
+        toast.error(errorMessage);
+      }
+    }
+
+    if (isSuccess) {
       const url = payload.data?.authorization_url;
       window.location.href = url;
-    },
-    onError: (error) => console.log(error),
+    }
   });
   return (
     <button

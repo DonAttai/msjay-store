@@ -16,16 +16,16 @@ import {
   Home,
   Login,
   Register,
-  ResetPassword,
   VerifyEmail,
-} from "./pages/";
+  ResetPassword,
+} from "./pages";
 import {
   Cart,
   CheckoutPage,
   ProductDetails,
   Protected,
   PayWithPaystack,
-} from "./components/";
+} from "./components";
 import { Toaster } from "react-hot-toast";
 
 const router = createBrowserRouter(

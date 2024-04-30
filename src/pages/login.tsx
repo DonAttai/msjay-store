@@ -4,24 +4,26 @@ import { useLogin } from "../hooks/useLogin";
 import toast from "react-hot-toast";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
+import { z } from "zod";
+import { fromError, ValidationError } from "zod-validation-error";
+
+const loginSchema = z.object({
+  username: z.string().min(1, { message: "username is required" }),
+  password: z.string().min(1, { message: "Password is required!" }),
+});
 
 import { AxiosError } from "axios";
 
 export const Login = () => {
-  const { data, isLoading, mutate } = useLogin();
+  const { data, isLoading, mutate, isError, isSuccess, error } = useLogin();
   const { setCredentials } = useUserActions();
   const [isPasswordShown, toggleVisibility] = useReducer(
     (prevState) => !prevState,
     false
   );
 
+  // get user
   const user = useUser();
-
-  useEffect(() => {
-    if (data) {
-      setCredentials(data);
-    }
-  }, [setCredentials, data]);
 
   //get user location
   const location = useLocation();
@@ -29,32 +31,47 @@ export const Login = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user) navigate(from, { replace: true });
-  });
+    if (data) {
+      setCredentials(data);
+    }
+  }, [setCredentials, data]);
+
+  useEffect(() => {
+    if (user) {
+      navigate(from, { replace: true });
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if (isError) {
+      if (error instanceof AxiosError) {
+        const errorMessage: string =
+          error.response?.data.message || error.message;
+        toast.error(errorMessage);
+      }
+    }
+    if (isSuccess) toast.success("Login successful!");
+  }, [isError, isSuccess]);
 
   // onsubmit
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-
-    const userData = {
-      password: formData.get("password") as string,
-      username: formData.get("username") as string,
-    };
-
-    mutate(
-      { ...userData },
-      {
-        onSuccess: () => e.currentTarget.reset(),
-        onError: (error) => {
-          if (error instanceof AxiosError) {
-            toast.error(error.response?.data.message);
-          } else {
-            toast.error("something went wrong!");
-          }
-        },
+    const data = Object.fromEntries(formData);
+    try {
+      const validatedData = loginSchema.safeParse(data);
+      if (!validatedData.success) {
+        const error = fromError(validatedData.error);
+        throw error;
       }
-    );
+      mutate(validatedData.data!);
+    } catch (error) {
+      if (error instanceof ValidationError) {
+        toast.error(error.message, { duration: 4000, position: "top-right" });
+      } else {
+        toast.error("Something went wrong!");
+      }
+    }
   };
 
   return (
@@ -78,7 +95,6 @@ export const Login = () => {
               placeholder="username"
               id="username"
               className="shadow border p-2 rounded-md focus:outline-none"
-              required
             />
           </div>
           <div className="flex flex-col relative gap-1 mb-3 w-full">
@@ -101,7 +117,6 @@ export const Login = () => {
               id="password"
               placeholder="password"
               className="shadow border p-2 rounded-md focus:outline-none"
-              required
             />
 
             {isPasswordShown ? (

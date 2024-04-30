@@ -1,58 +1,67 @@
 import { useEffect, useReducer } from "react";
 import toast from "react-hot-toast";
-// import { useRegister } from "../hooks/react-query-hooks";
 import { useRegister } from "../hooks/useRegister";
 
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AxiosError } from "axios";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
-import { useUser } from "../stores/user-store";
+import { z } from "zod";
+import { fromError, ValidationError } from "zod-validation-error";
+
+const userSchema = z.object({
+  email: z.string().email(),
+  username: z
+    .string()
+    .min(3, { message: "username mut contain at least 3 characters" }),
+  password: z
+    .string()
+    .min(8, { message: "pasword must contain at leat 8 characters" }),
+});
 
 export const Register = () => {
-  const { isLoading, mutate } = useRegister();
-
-  const user = useUser();
+  const { data, isLoading, mutate, isError, error, isSuccess } = useRegister();
 
   const [isPasswordShown, toggleVisibility] = useReducer(
     (prevState) => !prevState,
     false
   );
 
-  const location = useLocation();
-  const from = location.state?.from?.pathname || "/";
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user) navigate(from, { replace: true });
+    if (data) navigate("/");
+  });
+
+  useEffect(() => {
+    if (isError) {
+      if (error instanceof AxiosError) {
+        const erroMessage: string =
+          error.response?.data.message || error.message;
+        toast.error(erroMessage);
+      }
+    }
+    if (isSuccess) {
+      toast.success(data.message);
+    }
   });
 
   // onsubmit
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-
-    const userData = {
-      password: formData.get("password") as string,
-      username: formData.get("username") as string,
-      email: formData.get("email") as string,
-    };
-
-    mutate(
-      { ...userData },
-      {
-        onSuccess: () => {
-          (e.target as HTMLFormElement).reset();
-          navigate("/");
-        },
-        onError: (error) => {
-          if (error instanceof AxiosError) {
-            toast.error(error?.response?.data.message);
-          } else {
-            toast.error("something went wrong!");
-          }
-        },
+    const data = Object.fromEntries(formData);
+    try {
+      const validatedData = userSchema.safeParse(data);
+      if (!validatedData.success) {
+        const error = fromError(validatedData.error);
+        throw error;
       }
-    );
+      mutate(validatedData.data);
+    } catch (err) {
+      if (err instanceof ValidationError) {
+        toast.error(err.message, { duration: 4000, position: "top-right" });
+      }
+    }
   };
   return (
     <div className="min-h-[calc(100vh-128px)] flex items-center justify-center container mx-auto">
