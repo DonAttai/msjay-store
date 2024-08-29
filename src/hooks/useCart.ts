@@ -5,15 +5,16 @@ import toast from "react-hot-toast";
 import { useQueryClient } from "@tanstack/react-query";
 import { useProducts } from "./useProducts";
 import { ProductType } from "../types";
+import { useUser } from "../stores/user-store";
 
 export const useCart = () => {
+  const user = useUser();
   return useQuery({
-    queryKey: ["cart"],
+    queryKey: ["cart", user?._id],
     queryFn: async (): Promise<Cart> => {
-      const res = await axiosInstance().get("/carts/cart");
+      const res = await axiosInstance().get(`/carts/${user?._id}`);
       return res.data;
     },
-    networkMode: "offlineFirst",
   });
 };
 
@@ -21,16 +22,14 @@ export const useRemoveItemFromCart = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (payload: { productId: string }) => {
-      const res = await axiosInstance().post("/carts/cart", payload);
+    mutationFn: async (productId: { productId: string }) => {
+      const res = await axiosInstance().post("/carts/cart", productId);
       return res.data;
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["cart"] });
       toast.success(data.message);
     },
-
-    networkMode: "offlineFirst",
   });
 };
 
@@ -46,8 +45,6 @@ export const useAddToCart = () => {
       queryClient.invalidateQueries({ queryKey: ["cart"] });
       toast.success(data.message);
     },
-
-    networkMode: "offlineFirst",
   });
 };
 
@@ -77,7 +74,6 @@ export const useDecreaseCartItemQuantity = (productId: string) => {
       queryClient.invalidateQueries({ queryKey: ["cart"] });
       toast.success(data.message);
     },
-    networkMode: "offlineFirst",
   });
 };
 
