@@ -1,6 +1,6 @@
 import { useProducts } from "../hooks/useProducts";
 import { CartItem } from "../types";
-import { currencyFormatter } from "../utils/currency-formatter";
+import { currencyFormatter } from "../lib/currency-formatter";
 import { AiOutlineDelete } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import {

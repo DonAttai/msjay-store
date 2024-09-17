@@ -6,17 +6,35 @@ import { Link, useNavigate } from "react-router-dom";
 import { AxiosError } from "axios";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { z } from "zod";
-import { fromError, ValidationError } from "zod-validation-error";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
-const userSchema = z.object({
+const signUpSchema = z.object({
+  firstName: z.string().min(3, { message: "First Name is required" }),
+  lastName: z.string().min(3, { message: "Last Name is required" }),
   email: z.string().email(),
-  username: z
-    .string()
-    .min(3, { message: "username mut contain at least 3 characters" }),
   password: z
     .string()
-    .min(8, { message: "pasword must contain at leat 8 characters" }),
+    .min(8, { message: "password must contain at leat 8 characters" }),
 });
+type RegisterUserType = z.infer<typeof signUpSchema>;
 
 export const Register = () => {
   const { data, isLoading, mutate, isError, error, isSuccess } = useRegister();
@@ -30,6 +48,15 @@ export const Register = () => {
 
   useEffect(() => {
     if (data) navigate("/");
+  });
+  const form = useForm<RegisterUserType>({
+    resolver: zodResolver(signUpSchema),
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+    },
   });
 
   useEffect(() => {
@@ -46,98 +73,105 @@ export const Register = () => {
   });
 
   // onsubmit
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const data = Object.fromEntries(formData);
-    try {
-      const validatedData = userSchema.safeParse(data);
-      if (!validatedData.success) {
-        const error = fromError(validatedData.error);
-        throw error;
-      }
-      mutate(validatedData.data);
-    } catch (err) {
-      if (err instanceof ValidationError) {
-        toast.error(err.message, { duration: 4000, position: "top-right" });
-      }
-    }
+  const onSubmit = async (values: RegisterUserType) => {
+    mutate(values);
   };
   return (
-    <div className="min-h-[calc(100vh-128px)] flex items-center justify-center container mx-auto">
-      <div className="w-full flex items-center justify-center">
-        <form
-          onSubmit={onSubmit}
-          className="flex flex-col w-full px-2 mx-4 my-8 items-center shadow-md border border-gray-300 rounded-md py-10 gap-4 md:my-0 md:px-4 md:mx-0 md:w-1/3 "
-        >
-          <h1 className=" text-xl font-semibold text-green-500">
-            Ms Jay Store
-          </h1>
-          <h1 className=" text-xl font-semibold text-gray-400">
-            Create account
-          </h1>
-          <div className="flex flex-col mb-3 w-full">
-            <label htmlFor="username" className="text-gray-400 font-semibold">
-              Username:
-            </label>
-            <input
-              type="text"
-              name="username"
-              placeholder="username"
-              id="username"
-              className="shadow border p-2 rounded-md focus:outline-none"
-            />
-          </div>
-          <div className="flex flex-col mb-3 w-full">
-            <label htmlFor="email" className="text-gray-400 font-semibold">
-              Email:
-            </label>
-            <input
-              type="email"
-              name="email"
-              placeholder="email"
-              id="email"
-              className="shadow border p-2 rounded-md focus:outline-none"
-            />
-          </div>
-          <div className="flex flex-col relative mb-3 w-full">
-            <label htmlFor="password" className="text-gray-400 font-semibold">
-              Password:
-            </label>
-            <input
-              name="password"
-              type={isPasswordShown ? "text" : "password"}
-              id="password"
-              placeholder="At least 8 characters"
-              className="shadow border p-2 rounded-md focus:outline-none"
-            />
-            {isPasswordShown ? (
-              <FaRegEye
-                onClick={toggleVisibility}
-                className="absolute right-10 bottom-2 text-gray-500 cursor-pointer text-2xl"
+    <div className="min-h-[calc(100vh-128px)] grid place-items-center w-full">
+      <Card className="sm:max-w-[425px]">
+        <CardHeader>
+          <CardTitle>Sign Up</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+              <FormField
+                control={form.control}
+                name="firstName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>First Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="First Name" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-            ) : (
-              <FaRegEyeSlash
-                onClick={toggleVisibility}
-                className="absolute right-10 bottom-2 text-gray-500 cursor-pointer text-2xl"
+              <FormField
+                control={form.control}
+                name="lastName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Last Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Last Name" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-            )}
-          </div>
-          <div className="text-center w-full">
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="bg-green-500 w-full text-white py-2 text-lg rounded-full font-bold duration-300 disabled:opacity-50 hover:bg-green-700 disabled:cursor-not-allowed"
-            >
-              {isLoading ? "Wait..." : "Continue"}
-            </button>
-          </div>
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Email" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <div className="flex flex-col relative mb-3">
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Password</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="At least 8 characters"
+                          type={isPasswordShown ? "text" : "password"}
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                {isPasswordShown ? (
+                  <FaRegEye
+                    onClick={toggleVisibility}
+                    className="absolute right-10 bottom-2 text-gray-500 cursor-pointer text-2xl"
+                  />
+                ) : (
+                  <FaRegEyeSlash
+                    onClick={toggleVisibility}
+                    className="absolute right-10 bottom-2 text-gray-500 cursor-pointer text-2xl"
+                  />
+                )}
+              </div>
+
+              <Button
+                type="submit"
+                disabled={isLoading}
+                className="bg-green-500 w-full text-white py-2 text-lg rounded-full font-bold duration-300 disabled:opacity-50 hover:bg-green-700 disabled:cursor-not-allowed"
+              >
+                {isLoading ? "Wait..." : "Continue"}
+              </Button>
+            </form>
+          </Form>
+        </CardContent>
+        <CardFooter>
           <Link to="/auth/login" className="justify-self-start">
             Already have an account?
-            <span className="text-green-500"> sign in</span>
+            <span className="text-green-500 underline"> sign in</span>
           </Link>
-        </form>
-      </div>
+        </CardFooter>
+      </Card>
     </div>
   );
 };

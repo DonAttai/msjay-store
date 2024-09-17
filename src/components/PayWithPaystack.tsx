@@ -1,29 +1,54 @@
-import { useMutation } from "@tanstack/react-query";
-import axiosInstance from "../hooks/axios";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axiosInstance from "../lib/axios";
 import { useUser } from "../stores/user-store";
-import { useCalculateTotalPrice } from "../hooks/useCart";
+import { useCalculateTotalPrice, useCart } from "../hooks/useCart";
 import { useEffect } from "react";
 import { AxiosError } from "axios";
 import toast from "react-hot-toast";
+import { Button } from "./ui/button";
+import { EXCHANGE_RATE } from "@/lib/utils";
+import { useGuestEmail } from "@/stores/user-store";
+import { Cart } from "@/types";
 
 export const PayWithPaystack = () => {
   const totalPrice = useCalculateTotalPrice();
-  const amount = 1000 * totalPrice!;
+  const amount = EXCHANGE_RATE * totalPrice!;
+  const guestEmail = useGuestEmail();
+  const { data: cart } = useCart();
   const user = useUser();
+  const emailAddress = user ? user.email : guestEmail;
+
+  const queryClient = useQueryClient();
+
+  type OrderType = {
+    email: string;
+    amount: number;
+    cartItems: Cart["products"];
+  };
   const {
     data: payload,
     isLoading,
-    mutate,
+    mutate: payWithPaystack,
     isError,
     error,
     isSuccess,
   } = useMutation({
-    mutationFn: async (userData: { amount: number; email: string }) => {
-      const res = await axiosInstance().post("/paystack/initialize", userData);
+    mutationFn: async (userData: OrderType) => {
+      const res = await axiosInstance.post("/paystack/initialize", userData);
       return res.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["order"] });
     },
   });
 
+  const makePayment = () => {
+    payWithPaystack({
+      amount,
+      email: emailAddress,
+      cartItems: cart?.products!,
+    });
+  };
   useEffect(() => {
     if (isError) {
       if (error instanceof AxiosError) {
@@ -33,17 +58,17 @@ export const PayWithPaystack = () => {
     }
 
     if (isSuccess) {
-      const url = payload.data?.authorization_url;
-      window.location.href = url;
+      window.location.href = payload.paymentUrl;
     }
   });
   return (
-    <button
-      className=" mx-2 p-4 bg-green-400 text-white font-bold"
+    <Button
+      className=" mx-2 p-4 bg-green-400 text-white text-lg font-bold hover:bg-green-600 "
       type="submit"
-      onClick={() => mutate({ amount, email: user?.email! })}
+      disabled={isLoading}
+      onClick={makePayment}
     >
-      {isLoading ? "Wait..." : "PayWithPaystack"}
-    </button>
+      {isLoading ? "Wait..." : "PAY NOW"}
+    </Button>
   );
 };

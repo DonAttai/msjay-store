@@ -1,15 +1,14 @@
-import axiosInstance from "./axios";
+import axiosInstance from "../lib/axios";
 import { useMutation } from "@tanstack/react-query";
 
 export const useRegister = () => {
   return useMutation({
     mutationFn: (credentials: {
-      username: string;
-      password: string;
+      firstName: string;
+      lastName: string;
       email: string;
+      password: string;
     }): Promise<{ message: string }> =>
-      axiosInstance()
-        .post("/auth/register", credentials)
-        .then((res) => res.data),
+      axiosInstance.post("/auth/register", credentials).then((res) => res.data),
   });
 };

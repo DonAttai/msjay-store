@@ -1,10 +1,11 @@
 export type ProductType = {
-  _id: string;
-  price: string;
+  _id?: string;
+  price: number;
   image: string;
   title: string;
   category: string;
   description: string;
+  stock?: number;
 };
 export interface IProduct {
   page: string;
@@ -28,9 +29,20 @@ export interface User {
 
 export type UserType = {
   _id: string;
+  firstName: string;
+  lastName: string;
   email: string;
   username: string;
   isVerified: boolean;
-  roles: string[];
+  role: string;
   accessToken: string;
+};
+
+export type OrderType = {
+  userId: string;
+  transactionId: string;
+  cartItems: CartItem[];
+  totalAmount: number;
+  orderStatus: string;
+  paymentStatus: string;
 };

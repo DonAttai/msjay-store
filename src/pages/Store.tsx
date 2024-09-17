@@ -2,6 +2,7 @@ import { useProducts } from "../hooks/useProducts";
 import { Hero, StoreItem } from "../components";
 import { ProductType } from "../types";
 import { useSearchParams } from "react-router-dom";
+import { Input } from "@/components/ui/input";
 
 export const Home = () => {
   const [searchParams, setSearchParams] = useSearchParams({ q: "" });
@@ -27,18 +28,18 @@ export const Home = () => {
   return (
     <>
       <Hero />
-      <div className="flex justify-center">
-        <input
+      <div className="flex justify-center py-8">
+        <Input
           type="search"
           defaultValue={q!}
-          placeholder="search by category, title"
-          className="p-2 outline-none border-2 rounded-md"
+          placeholder="Search by category, title"
           onChange={(e) =>
             setSearchParams((prev) => {
               prev.set("q", e.target.value);
               return prev;
             })
           }
+          className="max-w-sm"
         />
       </div>
       <section className="container mx-auto p-4 min-h-screen">

@@ -1,29 +1,29 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import axiosInstance from "./axios";
+import axiosInstance from "../lib/axios";
 import { Cart } from "../types";
 import toast from "react-hot-toast";
 import { useQueryClient } from "@tanstack/react-query";
 import { useProducts } from "./useProducts";
 import { ProductType } from "../types";
-import { useUser } from "../stores/user-store";
 
+// get cart item hook
 export const useCart = () => {
-  const user = useUser();
   return useQuery({
-    queryKey: ["cart", user?._id],
+    queryKey: ["cart"],
     queryFn: async (): Promise<Cart> => {
-      const res = await axiosInstance().get(`/carts/${user?._id}`);
+      const res = await axiosInstance.get("/carts/cart");
       return res.data;
     },
   });
 };
 
+// remove item from cart hook
 export const useRemoveItemFromCart = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (productId: { productId: string }) => {
-      const res = await axiosInstance().post("/carts/cart", productId);
+      const res = await axiosInstance.post("/carts/cart", productId);
       return res.data;
     },
     onSuccess: (data) => {
@@ -33,12 +33,13 @@ export const useRemoveItemFromCart = () => {
   });
 };
 
+// add item to cart hook
 export const useAddToCart = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (payload: { productId: string }) => {
-      const res = await axiosInstance().post("/carts", payload);
+      const res = await axiosInstance.post("/carts", payload);
       return res.data;
     },
     onSuccess: (data) => {
@@ -62,12 +63,13 @@ export const useCartQuantity = () => {
   );
 };
 
+// decrease cart item quantity hook
 export const useDecreaseCartItemQuantity = (productId: string) => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async () => {
-      const res = await axiosInstance().post(`/carts/cart/${productId}`);
+      const res = await axiosInstance.post(`/carts/cart/${productId}`);
       return res.data;
     },
     onSuccess: (data) => {
@@ -77,6 +79,7 @@ export const useDecreaseCartItemQuantity = (productId: string) => {
   });
 };
 
+// calculate cart item total price
 export const useCalculateTotalPrice = () => {
   const { data: cart } = useCart();
   const { data } = useProducts();
@@ -87,4 +90,18 @@ export const useCalculateTotalPrice = () => {
     );
     return total + (Number(product?.price) || 0) * cartItem.quantity;
   }, 0);
+};
+
+// detele cart item hook
+export const useDeleteCart = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (cartId: string) => {
+      const res = await axiosInstance.delete(`/carts/${cartId}`);
+      return res.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["cart"] });
+    },
+  });
 };

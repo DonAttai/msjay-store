@@ -1,33 +1,32 @@
 import { TiShoppingCart } from "react-icons/ti";
-import { RxAvatar } from "react-icons/rx";
 import { useUserActions, useUser } from "../stores/user-store";
 import { Link, NavLink } from "react-router-dom";
-import { useReducer } from "react";
-import { CiSettings, CiLogout } from "react-icons/ci";
 import { useCartQuantity } from "../hooks/useCart";
-// import { useReducer } from "react";
-// import { Cart } from ".";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { LogOut, Settings, Lock, LogIn, CircleUser } from "lucide-react";
+import { Role } from "@/lib/utils";
+import { Button } from "./ui/button";
 export const Header = () => {
   const user = useUser();
   const cartQuantity = useCartQuantity();
 
-  const [isOpen, toggleDropdown] = useReducer((prevState) => !prevState, false);
   const { logOut } = useUserActions();
-
-  // const cartQuantity = getCartQuantity() || 0;
-
-  function capitalizeFirstLetter(str: string) {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-  }
 
   return (
     <>
       <header className="w-screen h-16 bg-slate-900  text-white font-bold text-xl fixed z-10">
-        <div className=" container mx-auto h-full flex items-center justify-between relative pr-8 ">
+        <div className=" container mx-auto h-full flex items-center justify-between relative sm:pr-8 ">
           <NavLink to="/" className="pl-2 duration-300 hover:text-green-400">
             Ms Jay Store
           </NavLink>
-          <div className="flex gap-5 duration-300 ">
+          <div className="flex gap-2 duration-300 sm:gap-5 sm:pr-16">
             <div className="flex hover:text-green-400">
               <Link to="cart" className="text-lg">
                 <TiShoppingCart size="1.8em" />
@@ -41,41 +40,40 @@ export const Header = () => {
                 to="auth/login"
                 className="pl-2 duration-300 hover:text-green-400"
               >
-                Login
+                {/* Login */}
+                <Button variant="ghost" className="text-lg font-bold">
+                  <LogIn className="h-4 w-4 mr-1 font-bold" />
+                  Login
+                </Button>
               </NavLink>
             ) : (
-              <div className=" flex items-center gap-4 ">
-                <button onClick={toggleDropdown} className="flex gap-2">
-                  <RxAvatar className="text-white text-3xl cursor-pointer" />
-                </button>
-                {isOpen && (
-                  <div className="w-2/3  absolute -bottom-40 right-10 md:w-1/3">
-                    <ul className="h-100 bg-white flex text-xl font-normal flex-col py-4 px-4 border shadow-md text-black">
-                      <li className="font-medium text-2xl">
-                        {capitalizeFirstLetter(user.username)}
-                      </li>
-                      <hr className="w-full mb-2" />
-                      <li
-                        className="cursor-pointer flex gap-2 items-center mb-3"
-                        onClick={() => toggleDropdown()}
-                      >
-                        <CiSettings />
-                        Settings
-                      </li>
-                      <li
-                        onClick={() => {
-                          logOut();
-                          toggleDropdown();
-                        }}
-                        className="cursor-pointer flex items-center gap-2 mb-3"
-                      >
-                        <CiLogout className="font-bold" />
-                        Logout
-                      </li>
-                    </ul>
-                  </div>
-                )}
-              </div>
+              <DropdownMenu>
+                <DropdownMenuTrigger>
+                  <CircleUser className="h-6 w-6" />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-52">
+                  <DropdownMenuLabel>{`${user.firstName} ${user.lastName}`}</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem>
+                    <Settings className="mr-2 h-4 w-4" />
+                    <span>Settings</span>
+                  </DropdownMenuItem>
+                  {user?.role === Role.ADMIN && (
+                    <DropdownMenuItem asChild>
+                      <Link to="admin/dashboard">
+                        <Lock className="mr-2 h-4 w-4" />
+                        Admin
+                      </Link>
+                    </DropdownMenuItem>
+                  )}
+                  <DropdownMenuSeparator />
+
+                  <DropdownMenuItem>
+                    <LogOut className="mr-2 h-4 w-4" />
+                    <span onClick={logOut}>Log out</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             )}
           </div>
         </div>

@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useProducts } from "../hooks/useProducts";
-import { currencyFormatter } from "../utils/currency-formatter";
+import { currencyFormatter } from "../lib/currency-formatter";
 import {
   useAddToCart,
   useCartItemQuantity,

@@ -1,4 +1,4 @@
-import axiosInstance from "./axios";
+import axiosInstance from "../lib/axios";
 import { useMutation } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 export const useResetPassword = () => {
@@ -12,7 +12,7 @@ export const useResetPassword = () => {
       id: string;
       token: string;
     }): Promise<{ message: string }> =>
-      axiosInstance()
+      axiosInstance
         .post(`/auth/reset-password/${id}/${token}`, { password })
         .then((res) => res.data),
     onSuccess: (data: { message: string }) => toast.success(data.message),

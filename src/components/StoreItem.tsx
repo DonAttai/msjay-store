@@ -1,4 +1,4 @@
-import { currencyFormatter } from "../utils/currency-formatter";
+import { currencyFormatter } from "../lib/currency-formatter";
 import { ProductType } from "../types";
 import { Link } from "react-router-dom";
 import {
@@ -15,9 +15,10 @@ export const StoreItem = ({
   image,
 }: ProductType) => {
   const { mutate, isLoading } = useAddToCart();
-  const cartItemQuantity = useCartItemQuantity(productId);
-  const { mutate: decreaseItemQuantity } =
-    useDecreaseCartItemQuantity(productId);
+  const cartItemQuantity = useCartItemQuantity(productId!);
+  const { mutate: decreaseItemQuantity } = useDecreaseCartItemQuantity(
+    productId!
+  );
   const { mutate: removeItemFromCart } = useRemoveItemFromCart();
   // const { removeItemFromCart } = useCartActions();
 
@@ -46,14 +47,14 @@ export const StoreItem = ({
                 </p>
                 <button
                   className="border  bg-green-500 text-white mx-2 rounded-md shadow px-1 w-8 text-2xl font-extrabold hover:bg-green-800"
-                  onClick={() => mutate({ productId })}
+                  onClick={() => mutate({ productId: productId! })}
                 >
                   +
                 </button>
               </div>
               <button
                 className="bg-green-500 p-2 rounded-lg text-white font-semibold hover:bg-green-700"
-                onClick={() => removeItemFromCart({ productId })}
+                onClick={() => removeItemFromCart({ productId: productId! })}
               >
                 REMOVE
               </button>
@@ -64,7 +65,7 @@ export const StoreItem = ({
                 isLoading ? "bg-green-200 cursor-not-allowed" : ""
               }`}
               disabled={isLoading}
-              onClick={() => mutate({ productId })}
+              onClick={() => mutate({ productId: productId! })}
             >
               {isLoading ? "adding to cart..." : "ADD TO CART"}
             </button>

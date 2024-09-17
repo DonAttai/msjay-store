@@ -1,17 +1,13 @@
-import axiosInstance from "./axios";
+import axiosInstance from "../lib/axios";
 import { useMutation } from "@tanstack/react-query";
 import { UserType } from "../types";
 
 export const useLogin = () => {
   return useMutation({
     mutationFn: (credentials: {
-      username: string;
+      email: string;
       password: string;
     }): Promise<UserType> =>
-      axiosInstance()
-        .post("/auth/login", credentials)
-        .then((res) => res.data),
-
-    networkMode: "offlineFirst",
+      axiosInstance.post("/auth/login", credentials).then((res) => res.data),
   });
 };
