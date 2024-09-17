@@ -27,7 +27,9 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 const signUpSchema = z.object({
-  firstName: z.string().min(3, { message: "First Name is required" }),
+  firstName: z
+    .string()
+    .min(2, { message: "Must contain at least 3 characters" }),
   lastName: z.string().min(3, { message: "Last Name is required" }),
   email: z.string().email(),
   password: z
@@ -69,6 +71,7 @@ export const Register = () => {
     }
     if (isSuccess) {
       toast.success(data.message);
+      navigate("/auth/login");
     }
   });
 

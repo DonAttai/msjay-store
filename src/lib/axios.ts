@@ -36,7 +36,7 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
-    const status = error.response.status ?? null;
+    const status = error?.response?.status ?? null;
     const errorMessage = error.response?.data?.message;
     if (status === 401 && errorMessage === "Invalid Access Token") {
       if (user) {
