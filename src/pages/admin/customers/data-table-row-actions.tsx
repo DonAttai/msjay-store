@@ -1,10 +1,8 @@
-import React, { useReducer } from "react";
-
 import {
   DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
+  // DropdownMenuContent,
+  // DropdownMenuItem,
+  // DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
@@ -22,15 +20,16 @@ export default function DatatableRowActions({
   row,
 }: DataTableRowActionProps<UserType>) {
   const customer = row.original;
-  const [isUpdateModalOpen, toggleUpdateModal] = useReducer(
-    (prev) => !prev,
-    false
-  );
-  const [isDeleteModalOpen, toggleDeleteModal] = useReducer(
-    (prev) => !prev,
-    false
-  );
-  const [isViewModalOpen, toggleViewModal] = useReducer((prev) => !prev, false);
+  console.log(customer);
+  // const [isUpdateModalOpen, toggleUpdateModal] = useReducer(
+  //   (prev) => !prev,
+  //   false
+  // );
+  // const [isDeleteModalOpen, toggleDeleteModal] = useReducer(
+  //   (prev) => !prev,
+  //   false
+  // );
+  // const [isViewModalOpen, toggleViewModal] = useReducer((prev) => !prev, false);
 
   return (
     <>
@@ -52,7 +51,7 @@ export default function DatatableRowActions({
             <span className="sr-only">Toggle menu</span>
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
+        {/* <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
           <DropdownMenuItem>
             <button onClick={toggleUpdateModal}>Update</button>
@@ -63,7 +62,7 @@ export default function DatatableRowActions({
           <DropdownMenuItem>
             <button onClick={toggleViewModal}>View</button>
           </DropdownMenuItem>
-        </DropdownMenuContent>
+        </DropdownMenuContent> */}
       </DropdownMenu>
     </>
   );

@@ -1,6 +1,4 @@
-import { Link, useSearchParams } from "react-router-dom";
-import { Button } from "../../../../components/ui/button";
-import { ArrowLeft } from "lucide-react";
+import { useSearchParams } from "react-router-dom";
 import OrderConfirmation from "./order-confirmation";
 import {
   Card,

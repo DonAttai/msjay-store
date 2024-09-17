@@ -1,4 +1,4 @@
-import React, { useReducer } from "react";
+import { useReducer } from "react";
 
 import {
   DropdownMenu,
@@ -25,11 +25,11 @@ export default function DatatableRowActions({
     (prev) => !prev,
     false
   );
-  const [isDeleteModalOpen, toggleDeleteModal] = useReducer(
-    (prev) => !prev,
-    false
-  );
-  const [isViewModalOpen, toggleViewModal] = useReducer((prev) => !prev, false);
+  // const [isDeleteModalOpen, toggleDeleteModal] = useReducer(
+  //   (prev) => !prev,
+  //   false
+  // );
+  // const [isViewModalOpen, toggleViewModal] = useReducer((prev) => !prev, false);
 
   return (
     <>
@@ -56,12 +56,12 @@ export default function DatatableRowActions({
           <DropdownMenuItem>
             <button onClick={toggleUpdateModal}>Update</button>
           </DropdownMenuItem>
-          <DropdownMenuItem>
+          {/* <DropdownMenuItem>
             <button onClick={toggleDeleteModal}>Delete</button>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
+          </DropdownMenuItem> */}
+          {/* <DropdownMenuItem>
             <button onClick={toggleViewModal}>View</button>
-          </DropdownMenuItem>
+          </DropdownMenuItem> */}
         </DropdownMenuContent>
       </DropdownMenu>
     </>
