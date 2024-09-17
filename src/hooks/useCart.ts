@@ -84,7 +84,7 @@ export const useCalculateTotalPrice = () => {
   const { data: cart } = useCart();
   const { data } = useProducts();
 
-  return cart?.products.reduce((total, cartItem) => {
+  return cart?.products?.reduce((total, cartItem) => {
     const product = data?.products.find(
       (item: ProductType) => item._id === cartItem.productId
     );
