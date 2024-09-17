@@ -16,7 +16,7 @@ export const useProducts = () => {
 // get all products
 export const useGetAllProducts = () => {
   return useQuery({
-    queryKey: ["get-all-products"],
+    queryKey: ["products", "get-all-products"],
     queryFn: async (): Promise<ProductType[]> => {
       const res = await axiosInstance.get("/admin/products");
       return res.data;
@@ -34,7 +34,7 @@ export const useCreateProduct = () => {
     onSuccess: (data) => {
       toast.success(data.message);
       queryClient.invalidateQueries({
-        queryKey: ["products", "get-all-products"],
+        queryKey: ["products"],
       });
     },
   });
