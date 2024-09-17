@@ -3,6 +3,7 @@ import { DataTable } from "./data-table";
 import { useGetOrders } from "@/hooks/useOrder";
 
 export default function Orders() {
+  // get all orders
   const { data: orders, isLoading } = useGetOrders();
 
   return (
