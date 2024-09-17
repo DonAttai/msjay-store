@@ -13,7 +13,7 @@ export const Home = () => {
   const keys = ["category", "title", "description"] as const;
 
   // get filtered products
-  const filteredProducts = data?.products.filter((product) =>
+  const filteredProducts = data?.products?.filter((product) =>
     keys.some((key) => product[key].toLowerCase().includes(q!.toLowerCase()))
   );
 
