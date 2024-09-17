@@ -1,5 +1,4 @@
 // import cart-store hooks
-// import { useCalculateTotalPrice } from "../stores/cart-store";
 import {
   useCalculateTotalPrice,
   useCart,
@@ -30,7 +29,7 @@ export const Cart = () => {
     <>
       <section className=" bg-gray-100 pt-4 min-h-[calc(100vh-128px)] md:p-4">
         <div className="mx-2 md:mx-0">
-          {cart?.products.length ? (
+          {cart?.products?.length ? (
             <section className="flex flex-col justify-between container items-center mx-auto gap-5 md:flex-row md:items-start ">
               <div className="bg-white shadow-md rounded-md  md:w-3/4">
                 <div className="flex flex-col justify-between gap-3 pl-5 mt-4">
