@@ -57,7 +57,7 @@ export const useCartItemQuantity = (productId: string) => {
 
 export const useCartQuantity = () => {
   const { data: cart } = useCart();
-  return cart?.products.reduce(
+  return cart?.products?.reduce(
     (quantity, cartItem) => cartItem.quantity + quantity,
     0
   );
