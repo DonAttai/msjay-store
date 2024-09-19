@@ -49,7 +49,7 @@ export const formSchema = z.object({
   }),
 });
 
-export type addressType = z.infer<typeof formSchema>;
+export type AddressType = z.infer<typeof formSchema>;
 type AddressPropsType = {
   isOpen: boolean;
   toggleModal: () => void;
@@ -64,7 +64,7 @@ export function AddAddressDialog({ isOpen, toggleModal }: AddressPropsType) {
     }
   });
 
-  const form = useForm<addressType>({
+  const form = useForm<AddressType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       address: "",
@@ -75,7 +75,7 @@ export function AddAddressDialog({ isOpen, toggleModal }: AddressPropsType) {
     },
   });
 
-  const onSubmit = async (values: addressType) => {
+  const onSubmit = async (values: AddressType) => {
     addAddress(values);
   };
 

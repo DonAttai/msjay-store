@@ -12,6 +12,7 @@ import { MoreHorizontal } from "lucide-react";
 import { Row } from "@tanstack/react-table";
 import { OrderType } from "@/types";
 import UpdateOrderDialog from "./_components/update-order-dialog";
+import ViewOrderDialog from "./_components/view-order-dialog";
 
 interface DataTableRowActionProps<TData> {
   row: Row<TData>;
@@ -29,7 +30,7 @@ export default function DatatableRowActions({
   //   (prev) => !prev,
   //   false
   // );
-  // const [isViewModalOpen, toggleViewModal] = useReducer((prev) => !prev, false);
+  const [isViewModalOpen, toggleViewModal] = useReducer((prev) => !prev, false);
 
   return (
     <>
@@ -44,6 +45,11 @@ export default function DatatableRowActions({
         toggleModal={toggleDeleteModal}
         customer={customer}
       /> */}
+      <ViewOrderDialog
+        isOpen={isViewModalOpen}
+        toggleModal={toggleViewModal}
+        order={order}
+      />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button aria-haspopup="true" size="icon" variant="ghost">
@@ -59,9 +65,9 @@ export default function DatatableRowActions({
           {/* <DropdownMenuItem>
             <button onClick={toggleDeleteModal}>Delete</button>
           </DropdownMenuItem> */}
-          {/* <DropdownMenuItem>
+          <DropdownMenuItem>
             <button onClick={toggleViewModal}>View</button>
-          </DropdownMenuItem> */}
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </>

@@ -27,9 +27,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useCreateProduct } from "@/hooks/useProducts";
 import { useEffect, useState } from "react";
 import { updateProductSchema } from "../schemas/update-product-schema";
+import { useUpdateProduct } from "@/hooks/useProducts";
 
 type PropType = {
   isOpen: boolean;
@@ -44,7 +44,9 @@ export function UpdateProductDialog({
 }: PropType) {
   const [productImage, setProductImage] = useState("");
 
-  const { isLoading, isSuccess, mutate } = useCreateProduct();
+  const { isLoading, isSuccess, mutate } = useUpdateProduct(
+    product?._id as string
+  );
   const form = useForm<ProductType>({
     resolver: zodResolver(updateProductSchema),
     defaultValues: {
@@ -81,8 +83,6 @@ export function UpdateProductDialog({
   useEffect(() => {
     if (isSuccess) {
       toggleModal();
-      form.reset();
-      setProductImage("");
     }
   }, [isSuccess, toggleModal]);
 

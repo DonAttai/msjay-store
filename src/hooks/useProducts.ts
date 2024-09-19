@@ -39,3 +39,22 @@ export const useCreateProduct = () => {
     },
   });
 };
+// create product hooks
+export const useUpdateProduct = (productId: string) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (product: ProductType): Promise<{ message: string }> => {
+      const res = await axiosInstance.patch(
+        `/admin/products/${productId}`,
+        product
+      );
+      return res.data;
+    },
+    onSuccess: (data) => {
+      toast.success(data.message);
+      queryClient.invalidateQueries({
+        queryKey: ["products"],
+      });
+    },
+  });
+};

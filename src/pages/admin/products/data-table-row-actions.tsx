@@ -39,7 +39,7 @@ export default function DatatableRowActions({
         product={product}
       />
 
-      {/* <DeleteProductDailog
+      {/* <DeleteProductDialog
         isOpen={isDeleteModalOpen}
         toggleModal={toggleDeleteModal}
         customer={customer}

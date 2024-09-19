@@ -29,7 +29,7 @@ export const columns: ColumnDef<OrderType>[] = [
   },
   {
     accessorKey: "transactionId",
-    header: "Transaction Id",
+    header: "Order Id",
   },
   {
     accessorKey: "totalAmount",

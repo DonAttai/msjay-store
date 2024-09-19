@@ -17,6 +17,7 @@ import { useReducer } from "react";
 import { AddAddressDialog } from "./add-address-dialog";
 import { useProducts } from "@/hooks/useProducts";
 import { PayWithPaystack } from "./PayWithPaystack";
+import { Button } from "./ui/button";
 
 export const CheckoutPage = () => {
   const [isAddressModalOpen, toggleAddressModal] = useReducer(
@@ -45,11 +46,10 @@ export const CheckoutPage = () => {
         <div className="mb-2 text-lg">
           You have to login to successfully checkout
         </div>
-        <Link
-          to="/auth/login"
-          className="bg-green-400 px-2 py-1 text-white text-lg font-bold rounded-md hover:bg-green-600"
-        >
-          Login
+        <Link to="/auth/login">
+          <Button className="bg-green-400  text-white text-xl font-bold rounded-md hover:bg-green-600">
+            Login
+          </Button>
         </Link>
       </div>
     );

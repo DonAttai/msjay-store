@@ -45,4 +45,5 @@ export type OrderType = {
   totalAmount: number;
   orderStatus: string;
   paymentStatus: string;
+  createdAt: Date;
 };

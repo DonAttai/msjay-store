@@ -83,7 +83,7 @@ export const Register = () => {
     <div className="min-h-[calc(100vh-128px)] grid place-items-center w-full">
       <Card className="sm:max-w-[425px]">
         <CardHeader>
-          <CardTitle>Sign Up</CardTitle>
+          <CardTitle>Create Account</CardTitle>
         </CardHeader>
         <CardContent>
           <Form {...form}>
@@ -163,7 +163,7 @@ export const Register = () => {
                 disabled={isLoading}
                 className="bg-green-500 w-full text-white py-2 text-lg rounded-full font-bold duration-300 disabled:opacity-50 hover:bg-green-700 disabled:cursor-not-allowed"
               >
-                {isLoading ? "Wait..." : "Continue"}
+                {isLoading ? "Wait..." : "Create Account"}
               </Button>
             </form>
           </Form>
@@ -171,7 +171,7 @@ export const Register = () => {
         <CardFooter>
           <Link to="/auth/login" className="justify-self-start">
             Already have an account?
-            <span className="text-green-500 underline"> sign in</span>
+            <span className="text-green-500 underline"> Sign In</span>
           </Link>
         </CardFooter>
       </Card>
