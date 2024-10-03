@@ -3,8 +3,8 @@ import toast from "react-hot-toast";
 import { useUserStore } from "../stores/user-store";
 
 function getBaseURL() {
-  const NODE_ENV = import.meta.env.VITE_NODE_ENV;
-  if (NODE_ENV === "development") {
+  const environment = import.meta.env.VITE_NODE_ENV;
+  if (environment === "development") {
     return import.meta.env.VITE_LOCAL_API_URL;
   }
   return import.meta.env.VITE_API_URL;
@@ -26,7 +26,12 @@ const setCredentials = useUserStore.getState().actions.setCredentials;
 
 // request interceptor
 axiosInstance.interceptors.request.use(
-  (config) => config,
+  (config) => {
+    if (user?.accessToken) {
+      config.headers.Authorization = `Bearer ${user.accessToken}`;
+    }
+    return config;
+  },
   (error) => {
     return Promise.reject(error);
   }

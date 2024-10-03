@@ -47,9 +47,9 @@ export default function ViewOrderDialog({
 
   const orderedItems = order.cartItems.map((item) => {
     const cartItems = products?.find(
-      (product) => product._id === item.productId
+      (product) => product?._id === item?.productId
     );
-    return { ...cartItems, quantity: item.quantity };
+    return { ...cartItems, quantity: item?.quantity };
   });
 
   const orderDate = new Intl.DateTimeFormat("en-GB", {
@@ -79,17 +79,15 @@ export default function ViewOrderDialog({
           </TableHeader>
           <TableBody>
             {orderedItems &&
-              orderedItems.map((item) => {
-                return (
-                  <TableRow key={item?.title}>
-                    <TableCell>{item?.title}</TableCell>
-                    <TableCell>{item?.quantity}</TableCell>
-                    <TableCell>
-                      {currencyFormatter(item?.price! * item?.quantity)}
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
+              orderedItems.map((item, index) => (
+                <TableRow key={index}>
+                  <TableCell>{item?.title}</TableCell>
+                  <TableCell>{item?.quantity}</TableCell>
+                  <TableCell>
+                    {currencyFormatter(item?.price! * item?.quantity)}
+                  </TableCell>
+                </TableRow>
+              ))}
           </TableBody>
           <TableFooter>
             <TableRow className="font-bold">

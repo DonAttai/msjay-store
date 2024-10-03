@@ -7,16 +7,13 @@ import { AxiosError } from "axios";
 import toast from "react-hot-toast";
 import { Button } from "./ui/button";
 import { EXCHANGE_RATE } from "@/lib/utils";
-import { useGuestEmail } from "@/stores/user-store";
 import { Cart } from "@/types";
 
 export const PayWithPaystack = () => {
   const totalPrice = useCalculateTotalPrice();
   const amount = EXCHANGE_RATE * totalPrice!;
-  const guestEmail = useGuestEmail();
   const { data: cart } = useCart();
   const user = useUser();
-  const emailAddress = user ? user.email : guestEmail;
 
   const queryClient = useQueryClient();
 
@@ -45,7 +42,7 @@ export const PayWithPaystack = () => {
   const makePayment = () => {
     payWithPaystack({
       amount,
-      email: emailAddress,
+      email: user?.email!,
       cartItems: cart?.products!,
     });
   };

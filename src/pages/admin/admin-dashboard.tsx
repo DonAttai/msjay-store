@@ -26,8 +26,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Link, useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { Link, Navigate } from "react-router-dom";
 import { Role } from "@/lib/utils";
 import DashboardCard from "./_components/dashboard-card";
 
@@ -36,13 +35,10 @@ export const description =
 
 export function AdminDashboard() {
   const user = useUser();
-  const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!user || user?.role !== Role.ADMIN) {
-      navigate("/");
-    }
-  }, [user, navigate]);
+  if (!user || user?.role !== Role.ADMIN) {
+    return <Navigate to="/" />;
+  }
 
   return (
     <div className="flex min-h-screen w-full flex-col">
