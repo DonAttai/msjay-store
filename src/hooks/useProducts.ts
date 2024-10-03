@@ -7,7 +7,7 @@ export const useProducts = () => {
   return useQuery({
     queryKey: ["products"],
     queryFn: async (): Promise<IProduct> => {
-      const res = await axiosInstance.get("/products/?size=20&order=desc");
+      const res = await axiosInstance.get("/products/?size=40&order=desc");
       return res.data;
     },
   });

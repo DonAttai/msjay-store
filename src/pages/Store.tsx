@@ -16,7 +16,6 @@ export const Home = () => {
   const filteredProducts = data?.products?.filter((product) =>
     keys.some((key) => product[key].toLowerCase().includes(q!.toLowerCase()))
   );
-
   if (isLoading) {
     return (
       <div className="text-2xl h-[90vh] flex items-center justify-center ">
