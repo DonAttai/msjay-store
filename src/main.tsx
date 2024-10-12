@@ -29,6 +29,7 @@ import Customers from "./pages/admin/customers/customers.tsx";
 import Analytics from "./pages/admin/analytics/analytics.tsx";
 import SuccessPage from "./pages/admin/orders/_components/success-page.tsx";
 import OrderConfirmation from "./pages/admin/orders/_components/order-confirmation.tsx";
+import React from "react";
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route>
