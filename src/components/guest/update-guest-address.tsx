@@ -18,7 +18,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "./ui/select";
+} from "../ui/select";
 import {
   Dialog,
   DialogContent,
@@ -28,10 +28,14 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { nigerianStates } from "@/lib/utils";
-import { useAddCustomerAddress } from "@/hooks/useAddress";
-import { useEffect } from "react";
+import { PenBox } from "lucide-react";
+import { useGuestActions, useGuestAddress } from "@/stores/guest-user-store";
 
 export const formSchema = z.object({
+  fullName: z.string().min(2, {
+    message: "Name is required.",
+  }),
+  email: z.string().email(),
   address: z.string().min(2, {
     message: "Address is required.",
   }),
@@ -49,62 +53,96 @@ export const formSchema = z.object({
   }),
 });
 
-export type AddressType = z.infer<typeof formSchema>;
+type AddressType = z.infer<typeof formSchema>;
 type AddressPropsType = {
   isOpen: boolean;
   toggleModal: () => void;
 };
 
-export function AddAddressDialog({ isOpen, toggleModal }: AddressPropsType) {
-  const { mutate: addAddress, isLoading, isSuccess } = useAddCustomerAddress();
-
-  useEffect(() => {
-    if (isSuccess) {
-      toggleModal();
-    }
-  });
+export function UpdateGuestAddress({ isOpen, toggleModal }: AddressPropsType) {
+  const { setGuestAddress } = useGuestActions();
+  const guestAddress = useGuestAddress();
 
   const form = useForm<AddressType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      address: "",
-      street: "",
-      city: "",
-      state: "",
-      phone: "",
+      fullName: guestAddress?.fullName || "",
+      email: guestAddress?.email || "",
+      address: guestAddress?.address || "",
+      street: guestAddress?.street || "",
+      city: guestAddress?.city || "",
+      state: guestAddress?.state || "",
+      phone: guestAddress?.phone || "",
     },
   });
 
   const onSubmit = async (values: AddressType) => {
-    addAddress(values);
+    setGuestAddress(values);
+    toggleModal();
+    form.reset();
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={() => toggleModal()}>
+    <Dialog
+      open={isOpen}
+      onOpenChange={() => {
+        toggleModal();
+      }}
+    >
       <DialogTrigger asChild>
-        <Button variant="outline" className="mb-2">
-          Continue...
+        <Button
+          variant="outline"
+          className="mb-2 mt-2 font-bold text-lg text-right"
+        >
+          <PenBox />
         </Button>
       </DialogTrigger>
       <DialogContent
+        className="sm:max-w-[425px]"
         onInteractOutside={(e) => {
           e.preventDefault();
         }}
       >
         <DialogHeader>
-          <DialogTitle>Shipping Address</DialogTitle>
-          <DialogDescription>Enter shipping address</DialogDescription>
+          <DialogTitle>Update Shipping Address</DialogTitle>
+          <DialogDescription></DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
             <FormField
               control={form.control}
+              name="fullName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Full Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Full Name" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Address" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
               name="address"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Address</FormLabel>
+                  <FormLabel htmlFor="address">Address</FormLabel>
                   <FormControl>
-                    <Input placeholder="Address" {...field} />
+                    <Input placeholder="Address" id="address" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -115,9 +153,9 @@ export function AddAddressDialog({ isOpen, toggleModal }: AddressPropsType) {
               name="street"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Street</FormLabel>
+                  <FormLabel htmlFor="street">Street</FormLabel>
                   <FormControl>
-                    <Input placeholder="street" {...field} />
+                    <Input placeholder="street" {...field} id="street" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -130,9 +168,9 @@ export function AddAddressDialog({ isOpen, toggleModal }: AddressPropsType) {
                   name="city"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>City</FormLabel>
+                      <FormLabel htmlFor="city">City</FormLabel>
                       <FormControl>
-                        <Input placeholder="city" {...field} />
+                        <Input id="city" placeholder="city" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -144,7 +182,7 @@ export function AddAddressDialog({ isOpen, toggleModal }: AddressPropsType) {
                 name="state"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>State</FormLabel>
+                    <FormLabel htmlFor="state">State</FormLabel>
                     <Select
                       onValueChange={field.onChange}
                       defaultValue={field.value}
@@ -156,7 +194,7 @@ export function AddAddressDialog({ isOpen, toggleModal }: AddressPropsType) {
                       </FormControl>
                       <SelectContent>
                         {nigerianStates.map((state) => (
-                          <SelectItem key={state} value={state}>
+                          <SelectItem id="state" key={state} value={state}>
                             {state}
                           </SelectItem>
                         ))}
@@ -172,11 +210,12 @@ export function AddAddressDialog({ isOpen, toggleModal }: AddressPropsType) {
               name="phone"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Phone Number</FormLabel>
+                  <FormLabel htmlFor="phone">Phone Number</FormLabel>
                   <FormControl>
                     <Input
                       placeholder="Phone Number"
                       type="number"
+                      id="phone"
                       {...field}
                     />
                   </FormControl>
@@ -186,10 +225,9 @@ export function AddAddressDialog({ isOpen, toggleModal }: AddressPropsType) {
             />
             <Button
               type="submit"
-              disabled={isLoading}
               className=" text-white w-full bg-green-400 hover:bg-green-600 text-lg font-bold disabled:opacity-50"
             >
-              {isLoading ? "Wait..." : "Submit"}
+              Submit
             </Button>
           </form>
         </Form>

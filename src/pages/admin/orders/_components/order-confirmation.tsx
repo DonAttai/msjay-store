@@ -8,10 +8,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useGetAllProducts } from "@/hooks/useProducts";
+import { useProducts } from "@/hooks/useProducts";
 import { currencyFormatter } from "@/lib/currency-formatter";
-import { useCustomerAddress } from "@/hooks/useAddress";
-import { useUser } from "@/stores/user-store";
 import { EXCHANGE_RATE } from "@/lib/utils";
 
 export default function OrderConfirmation({
@@ -25,20 +23,21 @@ export default function OrderConfirmation({
     isSuccess,
   } = useCurrentOrder(reference as string);
 
-  const { data: products } = useGetAllProducts();
+  const { data: products } = useProducts();
 
-  // get customer address
-  const { data: address } = useCustomerAddress(order?.userId as string);
+  const address = order && order.addressInfo;
+  const customer = order && order.customer;
 
   // get user
-  const user = useUser();
 
   const orderedItems = order?.cartItems.map((cartItem) => {
-    const item = products?.find(
+    const item = products?.products.find(
       (product) => product._id === cartItem.productId
     );
     return { ...item, quantity: cartItem.quantity };
   });
+
+  console.log(orderedItems);
 
   if (isLoading) {
     return <div className="min-h-[calc(100vh-128px)] text-4xl">Loading...</div>;
@@ -61,7 +60,7 @@ export default function OrderConfirmation({
               {order.orderStatus}
             </p>
           </div>
-          <p className="mt-2 font-bold underline text-center">CART ITEMS</p>
+          <p className="mt-2 font-bold underline text-center">ITEMS</p>
           <Table className="mb-4">
             <TableHeader>
               <TableRow>
@@ -72,8 +71,8 @@ export default function OrderConfirmation({
             </TableHeader>
             <TableBody>
               {orderedItems &&
-                orderedItems.map((item) => (
-                  <TableRow key={item?._id}>
+                orderedItems.map((item, index) => (
+                  <TableRow key={index}>
                     <TableCell>{item?.title}</TableCell>
                     <TableCell>{item?.quantity}</TableCell>
                     <TableCell>
@@ -96,8 +95,8 @@ export default function OrderConfirmation({
           <section>
             <div className="mb-2">
               <h2 className="text-lg font-bold">Customer Details</h2>
-              <p>Name: {`${user?.firstName} ${user?.lastName}`}</p>
-              <p>Email: {user?.email}</p>
+              <p>Name: {customer?.fullName}</p>
+              <p>Email: {customer?.email}</p>
               <p>Phone: {address?.phone}</p>
             </div>
             <div className="mb-2">
@@ -110,7 +109,7 @@ export default function OrderConfirmation({
           </section>
         </div>
       ) : (
-        <div>No oders available</div>
+        <div>No orders available</div>
       )}
     </section>
   );

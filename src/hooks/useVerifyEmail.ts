@@ -6,15 +6,9 @@ import { UserType } from "../types";
 // verify emaill
 export const useVerifyEmail = () => {
   return useMutation({
-    mutationFn: ({
-      id,
-      token,
-    }: {
-      id: string;
-      token: string;
-    }): Promise<UserType> =>
+    mutationFn: ({ code }: { code: string }): Promise<UserType> =>
       axiosInstance
-        .post(`/auth/verify-email/${id}/${token}`, { token })
+        .post(`/auth/verify-email`, { code })
         .then((res) => res.data),
     onSuccess: () => toast.success("Acount verification successful"),
   });

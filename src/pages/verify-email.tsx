@@ -1,52 +1,94 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { useVerifyEmail } from "../hooks/useVerifyEmail";
-import { useUser, useUserActions } from "../stores/user-store";
+import { useUserActions } from "../stores/user-store";
 import { useEffect } from "react";
-import toast from "react-hot-toast";
-import { AxiosError } from "axios";
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+} from "@/components/ui/input-otp";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Button } from "@/components/ui/button";
+
+const FormSchema = z.object({
+  code: z.string().min(6, {
+    message: "Your one-time password must be 6 characters.",
+  }),
+});
 
 export const VerifyEmail = () => {
-  const { id, token } = useParams();
-  const { data, isLoading, mutate } = useVerifyEmail();
+  const { data, isLoading, mutate: verifyEmail } = useVerifyEmail();
   const { setCredentials } = useUserActions();
-  const user = useUser();
+  const form = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
+    defaultValues: {
+      code: "",
+    },
+  });
 
+  const navigate = useNavigate();
   useEffect(() => {
     if (data) {
       setCredentials(data);
+      navigate("/");
     }
   }, [setCredentials, data]);
 
-  const navigate = useNavigate();
+  function onSubmit(data: z.infer<typeof FormSchema>) {
+    console.log(data);
+    verifyEmail(data);
+  }
 
-  useEffect(() => {
-    if (user) navigate("/");
-  });
+  if (data && data.isVerified) {
+    return <Navigate to="/" />;
+  }
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    mutate(
-      { id: id as string, token: token as string },
-      {
-        onError: (error) => {
-          if (error instanceof AxiosError) {
-            toast.error(error?.response?.data.message);
-          }
-        },
-      }
-    );
-  };
   return (
-    <div className=" min-h-[calc(100vh-128px)] flex flex-col gap-8 justify-center items-center">
-      <h2 className="text-2xl text-center">Msjay Store</h2>
-      <form onSubmit={onSubmit}>
-        <button
-          type="submit"
-          className="bg-green-600 text-white px-4 py-1.5 text-xl rounded-md font-bold disabled:opacity-50"
-        >
-          {isLoading ? "Verifying..." : "  Verify Email"}
-        </button>
-      </form>
-    </div>
+    <section className="min-h-screen grid place-content-center">
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="p-4 space-y-6">
+          <FormField
+            control={form.control}
+            name="code"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>One-Time Verification Code</FormLabel>
+                <FormControl>
+                  <InputOTP maxLength={6} {...field}>
+                    <InputOTPGroup>
+                      <InputOTPSlot index={0} />
+                      <InputOTPSlot index={1} />
+                      <InputOTPSlot index={2} />
+                      <InputOTPSlot index={3} />
+                      <InputOTPSlot index={4} />
+                      <InputOTPSlot index={5} />
+                    </InputOTPGroup>
+                  </InputOTP>
+                </FormControl>
+                <FormDescription>
+                  Please enter the verification code sent to your email.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <Button type="submit">
+            {isLoading ? "Wait..." : "Submit Verification Code"}
+          </Button>
+        </form>
+      </Form>
+    </section>
   );
 };

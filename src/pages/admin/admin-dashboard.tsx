@@ -33,7 +33,7 @@ import DashboardCard from "./_components/dashboard-card";
 export const description =
   "An application shell with a header and main content area. The header has a navbar, a search input and and a user nav dropdown. The user nav is toggled by a button with an avatar image.";
 
-export function AdminDashboard() {
+export default function AdminDashboard() {
   const user = useUser();
 
   if (!user || user?.role !== Role.ADMIN) {

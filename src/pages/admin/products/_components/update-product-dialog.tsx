@@ -103,7 +103,7 @@ export function UpdateProductDialog({
     >
       <DialogTrigger asChild></DialogTrigger>
       <DialogContent
-        className="sm:max-w-[425px] overflow-y-scroll max-h-screen my-2"
+        className="overflow-y-scroll max-h-screen my-2 sm:max-w-[425px]"
         onInteractOutside={(e) => {
           e.preventDefault();
         }}

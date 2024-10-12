@@ -1,4 +1,4 @@
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import ReactDOM from "react-dom/client";
 import {
   createBrowserRouter,
@@ -18,24 +18,24 @@ import {
   Register,
   VerifyEmail,
   ResetPassword,
+  GuestCheckout,
 } from "./pages";
 import { Cart, CheckoutPage, ProductDetails } from "./components";
 import { Toaster } from "react-hot-toast";
 import AdminLayout from "./components/admin-layout.tsx";
-import { AdminDashboard } from "./pages/admin/admin-dashboard.tsx";
+import AdminDashboard from "./pages/admin/admin-dashboard.tsx";
 import Orders from "./pages/admin/orders/orders.tsx";
 import Products from "./pages/admin/products/products.tsx";
 import Customers from "./pages/admin/customers/customers.tsx";
 import Analytics from "./pages/admin/analytics/analytics.tsx";
 import SuccessPage from "./pages/admin/orders/_components/success-page.tsx";
 import OrderConfirmation from "./pages/admin/orders/_components/order-confirmation.tsx";
-
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route>
-      <Route path="verify-email/:id/:token" element={<VerifyEmail />} />
+      <Route path="verify-email" element={<VerifyEmail />} />
       <Route path="forgot-password" element={<ForgotPassword />} />
-      <Route path="reset-password/:id/:token" element={<ResetPassword />} />
+      <Route path="reset-password/:token" element={<ResetPassword />} />
       <Route path="admin" element={<AdminLayout />}>
         <Route path="dashboard" element={<AdminDashboard />} />
         <Route path="orders" element={<Orders />} />
@@ -50,6 +50,7 @@ const router = createBrowserRouter(
         <Route path="cart" element={<Cart />} />
         <Route path="product/:id" element={<ProductDetails />} />
         <Route path="checkout" element={<CheckoutPage />} />
+        <Route path="/guest-checkout" element={<GuestCheckout />} />
         <Route
           path="order/confirmation"
           element={<OrderConfirmation reference="" />}

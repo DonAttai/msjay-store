@@ -5,7 +5,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { OrderType, UserType } from "@/types";
+import { OrderType } from "@/types";
 
 import {
   Table,
@@ -19,9 +19,6 @@ import {
 import { useGetAllProducts } from "@/hooks/useProducts";
 import { currencyFormatter } from "@/lib/currency-formatter";
 import { EXCHANGE_RATE } from "@/lib/utils";
-import { useQuery } from "@tanstack/react-query";
-import axiosInstance from "@/lib/axios";
-import { AddressType } from "@/components/add-address-dialog";
 
 type PropType = {
   isOpen: boolean;
@@ -35,15 +32,6 @@ export default function ViewOrderDialog({
   order,
 }: PropType) {
   const { data: products } = useGetAllProducts();
-
-  const { data: userWithAddress } = useQuery({
-    queryKey: ["user-with-address"],
-    queryFn: async (): Promise<UserType & AddressType> => {
-      const res = await axiosInstance.get(`/users/${order?.userId}/address`);
-      return res.data;
-    },
-    enabled: !!order.userId,
-  });
 
   const orderedItems = order.cartItems.map((item) => {
     const cartItems = products?.find(
@@ -101,10 +89,8 @@ export default function ViewOrderDialog({
         <section>
           <div>
             <h2>Customer Details</h2>
-            <p>
-              Name:{" "}
-              {`${userWithAddress?.firstName} ${userWithAddress?.lastName}`}
-            </p>
+            <p>Name: {order.customer.fullName}</p>
+            <p>Phone: {order.addressInfo.phone}</p>
           </div>
         </section>
       </DialogContent>

@@ -7,21 +7,46 @@ import { AxiosError } from "axios";
 import toast from "react-hot-toast";
 import { Button } from "./ui/button";
 import { EXCHANGE_RATE } from "@/lib/utils";
-import { Cart } from "@/types";
+import { AddressType, Cart } from "@/types";
+import { useCustomerAddress } from "@/hooks/useAddress";
+import { useGuestAddress } from "@/stores/guest-user-store";
+
+type CustomerType = {
+  email: string;
+  fullName: string;
+};
+type OrderType = {
+  customer: CustomerType;
+  addressInfo: AddressType;
+  amount: number;
+  cartItems: Cart["products"];
+};
 
 export const PayWithPaystack = () => {
   const totalPrice = useCalculateTotalPrice();
   const amount = EXCHANGE_RATE * totalPrice!;
   const { data: cart } = useCart();
   const user = useUser();
-
+  const { data: address } = useCustomerAddress(user?._id as string);
   const queryClient = useQueryClient();
+  const guestAddress = useGuestAddress();
 
-  type OrderType = {
-    email: string;
-    amount: number;
-    cartItems: Cart["products"];
-  };
+  let guestAdressWithoutNameAndEmail: AddressType;
+  // set customer address
+  const customerAddress = {
+    address: address?.address,
+    street: address?.street,
+    city: address?.city,
+    state: address?.state,
+    phone: address?.phone,
+  } as AddressType;
+
+  if (guestAddress) {
+    const { email, fullName, ...others } = guestAddress;
+    // set guest address
+    guestAdressWithoutNameAndEmail = others;
+  }
+
   const {
     data: payload,
     isLoading,
@@ -39,10 +64,20 @@ export const PayWithPaystack = () => {
     },
   });
 
+  let customer: CustomerType = { email: "", fullName: "" };
+  if (user) {
+    customer.email = user.email;
+    customer.fullName = `${user.firstName}  ${user.lastName}`;
+  } else {
+    customer.email = guestAddress?.email as string;
+    customer.fullName = guestAddress?.fullName as string;
+  }
+
   const makePayment = () => {
     payWithPaystack({
       amount,
-      email: user?.email!,
+      customer,
+      addressInfo: user ? customerAddress : guestAdressWithoutNameAndEmail,
       cartItems: cart?.products!,
     });
   };
@@ -65,7 +100,7 @@ export const PayWithPaystack = () => {
       disabled={isLoading}
       onClick={makePayment}
     >
-      {isLoading ? "Wait..." : "PAY NOW"}
+      {isLoading ? "Wait..." : "Proceed To Payment"}
     </Button>
   );
 };

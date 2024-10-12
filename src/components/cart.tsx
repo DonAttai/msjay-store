@@ -14,16 +14,22 @@ import { currencyFormatter } from "../lib/currency-formatter";
 import { Item } from ".";
 import { Link, useNavigate } from "react-router-dom";
 import EmptyCart from "./empty-cart";
+import { Button } from "./ui/button";
+import { useUser } from "@/stores/user-store";
+import toast from "react-hot-toast";
 
 //import modal
 
 export const Cart = () => {
-  const { data: cart } = useCart();
+  const { data: cart, isError } = useCart();
+  const user = useUser();
   const cartQuantity = useCartQuantity();
 
-  const navigate = useNavigate();
-
   const totalPrice = useCalculateTotalPrice();
+
+  if (isError) {
+    toast.error("error");
+  }
 
   return (
     <>
@@ -58,17 +64,19 @@ export const Cart = () => {
                   <hr className="w-full" />
                 </div>
                 <div className="text-center mb-2 gap-2 flex flex-col px-4">
-                  <button
-                    onClick={() => navigate("/checkout")}
-                    className="p-2 bg-green-500 rounded-md shadow text-white font-bold duration-300 hover:bg-green-700"
-                  >
-                    Checkout
-                  </button>
+                  {user ? (
+                    <CheckoutButton title="Checkout" url="checkout" />
+                  ) : (
+                    <CheckoutButton
+                      title="Guest Checkout"
+                      url="guest-checkout"
+                    />
+                  )}
                   <Link
                     to="/"
-                    className="p-2 bg-green-500 rounded-md shadow text-white font-bold duration-300 hover:bg-green-700"
+                    className="p-2 bg-green-500 rounded-md shadow text-white text-lg font-bold duration-300 hover:bg-green-700"
                   >
-                    Continue shopping
+                    Back To Store
                   </Link>
                 </div>
               </div>
@@ -81,3 +89,15 @@ export const Cart = () => {
     </>
   );
 };
+
+function CheckoutButton({ title, url }: { title: string; url: string }) {
+  const navigate = useNavigate();
+  return (
+    <Button
+      onClick={() => navigate(`/${url}`)}
+      className="p-2 bg-green-500 rounded-md shadow text-white text-lg font-bold duration-300 hover:bg-green-700"
+    >
+      {title}
+    </Button>
+  );
+}

@@ -2,7 +2,7 @@ import { useEffect, useReducer } from "react";
 import toast from "react-hot-toast";
 import { useRegister } from "../hooks/useRegister";
 
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { AxiosError } from "axios";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { z } from "zod";
@@ -39,7 +39,13 @@ const signUpSchema = z.object({
 type RegisterUserType = z.infer<typeof signUpSchema>;
 
 export const Register = () => {
-  const { data, isLoading, mutate, isError, error, isSuccess } = useRegister();
+  const {
+    data,
+    isLoading,
+    mutate: createAccount,
+    isError,
+    error,
+  } = useRegister();
 
   const [isPasswordShown, toggleVisibility] = useReducer(
     (prevState) => !prevState,
@@ -69,16 +75,17 @@ export const Register = () => {
         toast.error(erroMessage);
       }
     }
-    if (isSuccess) {
-      toast.success(data.message);
-      navigate("/auth/login");
-    }
   });
 
   // onsubmit
   const onSubmit = async (values: RegisterUserType) => {
-    mutate(values);
+    createAccount(values);
   };
+
+  if (data && data.success === true) {
+    toast.success(data.message);
+    return <Navigate to="/auth/login" />;
+  }
   return (
     <div className="min-h-[calc(100vh-128px)] grid place-items-center w-full">
       <Card className="sm:max-w-[425px]">

@@ -1,33 +1,49 @@
 import { useCustomerAddress } from "@/hooks/useAddress";
 import { useUser } from "@/stores/user-store";
-import { UserType } from "@/types";
-import { Button } from "./ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "./ui/card";
+import { useReducer } from "react";
+import { UpdateAddressDialog } from "./update-address-dialog";
 
 export function ShippingAddress() {
-  const user = useUser() as UserType;
+  const [isModalOpen, toggleModal] = useReducer((prev) => !prev, false);
+  const user = useUser();
   const { data: address, isLoading: isAddressLoading } = useCustomerAddress(
-    user._id
+    user?._id as string
   );
 
   if (isAddressLoading) {
     <p>Loading...</p>;
   }
   return (
-    <div className="mt-8">
-      {address && (
-        <>
-          <h2 className="text-2xl font-bold">Shipping Address</h2>
-          <p>Address: {address.address}</p>
-          <p>Street: {address.street}</p>
-          <p>City: {address.city}</p>
-          <p>State: {address.state}</p>
-          <p>Email: {user.email}</p>
-          <p className="flex justify-between items-center">
-            Phone: {address.phone}
-            <Button variant="ghost">Update Address</Button>
-          </p>
-        </>
-      )}
-    </div>
+    <Card className="max-w-[425px] w-fit">
+      <CardHeader>
+        <CardTitle>Shipping Address</CardTitle>
+        <CardDescription>Items will be shipped to this address</CardDescription>
+      </CardHeader>
+      <CardContent>
+        {address && (
+          <>
+            <p>Address: {address?.address}</p>
+            <p>Street: {address?.street}</p>
+            <p>City: {address?.city}</p>
+            <p>State: {address?.state}</p>
+            <p>Email: {user?.email}</p>
+            <p>Phone: {address?.phone}</p>
+            <div className="text-right">
+              <UpdateAddressDialog
+                isOpen={isModalOpen}
+                toggleModal={toggleModal}
+              />
+            </div>
+          </>
+        )}
+      </CardContent>
+    </Card>
   );
 }

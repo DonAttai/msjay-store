@@ -37,13 +37,24 @@ export type UserType = {
   role: string;
   accessToken: string;
 };
-
+export type AddressType = {
+  address: string;
+  street: string;
+  city: string;
+  state: string;
+  phone: string;
+};
 export type OrderType = {
-  userId: string;
+  customerId: string;
+  customer: {
+    email: string;
+    fullName: string;
+  };
   transactionId: string;
   cartItems: CartItem[];
   totalAmount: number;
   orderStatus: string;
   paymentStatus: string;
+  addressInfo: AddressType;
   createdAt: Date;
 };

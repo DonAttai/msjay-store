@@ -8,7 +8,7 @@ export const useRegister = () => {
       lastName: string;
       email: string;
       password: string;
-    }): Promise<{ message: string }> =>
+    }): Promise<{ success: boolean; message: string }> =>
       axiosInstance.post("/auth/register", credentials).then((res) => res.data),
   });
 };
