@@ -37,8 +37,6 @@ export default function OrderConfirmation({
     return { ...item, quantity: cartItem.quantity };
   });
 
-  console.log(orderedItems);
-
   if (isLoading) {
     return <div className="min-h-[calc(100vh-128px)] text-4xl">Loading...</div>;
   }
