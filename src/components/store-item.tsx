@@ -61,7 +61,7 @@ export const StoreItem = ({
             </div>
           ) : (
             <button
-              className={`border  bg-green-500 opacity-0 text-white shadow font-semibold p-1 rounded-lg transition duration-300 group-hover:opacity-100 hover:bg-green-700 ${
+              className={`border  bg-green-500 opacity-0 text-white shadow font-semibold p-1 rounded-lg transition duration-300 disabled:opacity-50 group-hover:opacity-100 hover:bg-green-700 ${
                 isLoading ? "bg-green-200 cursor-not-allowed" : ""
               }`}
               disabled={isLoading}

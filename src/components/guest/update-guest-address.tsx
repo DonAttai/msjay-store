@@ -92,6 +92,7 @@ export function UpdateGuestAddress({ isOpen, toggleModal }: AddressPropsType) {
       <DialogTrigger asChild>
         <Button
           variant="outline"
+          title="Update Shipping Address"
           className="mb-2 mt-2 font-bold text-lg text-right"
         >
           <PenBox />

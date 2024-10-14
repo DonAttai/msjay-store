@@ -43,7 +43,7 @@ export const CheckoutPage = () => {
           {address ? (
             <ShippingAddress />
           ) : isFetchingAddress ? (
-            <div className="text-3xl">Fetching address...</div>
+            <div className="text-3xl">Wait...</div>
           ) : (
             <AddShippingAddressForm />
           )}
