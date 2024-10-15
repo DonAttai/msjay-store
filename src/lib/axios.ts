@@ -2,7 +2,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useUserStore } from "../stores/user-store";
 
-function getBaseURL() {
+export function getBaseURL() {
   // get NODE_ENV
   const environment = import.meta.env.VITE_NODE_ENV;
   if (environment === "development") {
@@ -21,16 +21,13 @@ const axiosInstance = axios.create({
   withCredentials: true,
 });
 
-// get user and setCredentials from user-store
-const user = useUserStore.getState().user;
-const setCredentials = useUserStore.getState().actions.setCredentials;
-
 // request interceptor
 axiosInstance.interceptors.request.use(
   (config) => {
-    if (user?.accessToken) {
-      config.headers.Authorization = `Bearer ${user.accessToken}`;
-    }
+    // const {user} = useUserStore.getState()
+    // if (user?.accessToken) {
+    //   config.headers.Authorization = `Bearer ${user.accessToken}`;
+    // }
     return config;
   },
   (error) => {
@@ -42,10 +39,12 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
+    const { user } = useUserStore.getState();
     const status = error?.response?.status ?? null;
     const errorMessage = error.response?.data?.message;
     if (status === 401 && errorMessage === "Invalid Access Token") {
       if (user) {
+        const { setCredentials } = useUserStore.getState().actions;
         setCredentials(null);
         window.location.href = "/auth/login";
         toast.error("Your session has expired! Log in again");

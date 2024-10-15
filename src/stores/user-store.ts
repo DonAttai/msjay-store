@@ -1,5 +1,7 @@
 import { create } from "zustand";
 import { UserType } from "../types";
+import axiosInstance from "@/lib/axios";
+import toast from "react-hot-toast";
 
 interface UserStore {
   user: UserType | null;
@@ -22,10 +24,16 @@ export const useUserStore = create<UserStore>()((set) => ({
       localStorage.setItem("user-credentials", JSON.stringify(user));
       set({ user });
     },
-    logOut: () => {
-      localStorage.removeItem("user-credentials");
-      set({ user: null });
-      window.location.href = "/auth/login";
+
+    logOut: async () => {
+      try {
+        await axiosInstance.post(`/auth/logout`);
+        localStorage.removeItem("user-credentials");
+        set({ user: null });
+        window.location.href = "/auth/login";
+      } catch (error) {
+        toast.error("Something went wrong!");
+      }
     },
   },
 }));
