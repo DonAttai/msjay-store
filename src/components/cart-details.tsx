@@ -40,8 +40,6 @@ export function CartSummary({ isAddress }: { isAddress: boolean }) {
     return { ...(cartItems as ProductType), quantity: item.quantity };
   });
 
-  // get cart quantity
-
   return (
     <Card className="h-fit">
       <CardHeader>
