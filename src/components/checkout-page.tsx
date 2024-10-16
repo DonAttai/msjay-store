@@ -27,7 +27,7 @@ export const CheckoutPage = () => {
   }
 
   // cart is empty navigate to store
-  if (cart && cart?.products.length < 1) {
+  if (cart?.products.length! < 1) {
     return <Navigate to="/" />;
   }
 
@@ -38,7 +38,14 @@ export const CheckoutPage = () => {
 
   return (
     <section className="min-h-[calc(100vh-128px)] bg-slate-100 flex flex-col">
-      <div className="my-4 flex justify-center gap-4 mx-4">
+      <div className="my-4 flex flex-col gap-4 mx-4 sm:flex-row sm:justify-center ">
+        <div>
+          {isLoadingCart ? (
+            <div className="text-2xl font-bold">Wait...</div>
+          ) : (
+            <CartSummary isAddress={isSuccess} />
+          )}
+        </div>
         <div>
           {address ? (
             <ShippingAddress />
@@ -48,11 +55,6 @@ export const CheckoutPage = () => {
             <AddShippingAddressForm />
           )}
         </div>
-        {isLoadingCart ? (
-          <div className="text-2xl font-bold">Fetching cart item(s)...</div>
-        ) : (
-          <CartSummary isAddress={isSuccess} />
-        )}
       </div>
     </section>
   );

@@ -11,7 +11,7 @@ export function GuestCheckout() {
   const guestAddress = useGuestAddress();
   const { setGuestAddress } = useGuestActions();
   const user = useUser();
-  const { isLoading: isLoadingCart } = useCart();
+  const { data: cart, isLoading: isLoadingCart } = useCart();
 
   useEffect(() => {
     setGuestAddress(
@@ -22,11 +22,23 @@ export function GuestCheckout() {
   const isAddress = guestAddress === null ? false : true;
 
   if (user) {
-    return <Navigate to="/checkout" />;
+    return <Navigate to="/" />;
   }
+
+  if (cart?.products?.length! < 1) {
+    return <Navigate to="/" />;
+  }
+
   return (
     <section className="min-h-[calc(100vh-128px)] bg-slate-100  flex flex-col">
-      <div className="my-4 flex justify-center gap-4 mx-4">
+      <div className="my-4 flex flex-col gap-4 mx-4 sm:flex-row sm:justify-center ">
+        <div>
+          {isLoadingCart ? (
+            <div className="text-2xl font-bold">Fetching cart item(s)...</div>
+          ) : (
+            <CartSummary isAddress={isAddress} />
+          )}
+        </div>
         <div>
           {guestAddress ? (
             <GuestShippingAddress />
@@ -34,11 +46,6 @@ export function GuestCheckout() {
             <GuestShippingAddressForm />
           )}
         </div>
-        {isLoadingCart ? (
-          <div className="text-2xl font-bold">Fetching cart item(s)...</div>
-        ) : (
-          <CartSummary isAddress={isAddress} />
-        )}
       </div>
     </section>
   );

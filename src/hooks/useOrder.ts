@@ -2,13 +2,21 @@ import axiosInstance from "@/lib/axios";
 import { OrderType } from "@/types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
+// sort orders by date
+
+const sortedOrders = (orders: OrderType[]) => {
+  return orders.sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  );
+};
+
 // get all orders - admin only
 export const useGetOrders = () => {
   return useQuery({
     queryKey: ["orders", "get-all-orders"],
     queryFn: async () => {
       const res = await axiosInstance.get("/orders");
-      return res.data;
+      return sortedOrders(res.data);
     },
   });
 };

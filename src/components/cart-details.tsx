@@ -52,7 +52,9 @@ export function CartSummary({ isAddress }: { isAddress: boolean }) {
         <Table className="mb-4">
           <TableHeader>
             <TableRow>
-              <TableHead>Item(s)</TableHead>
+              <TableHead className="hidden sm:block">
+                {cartQuantity! > 1 ? "Items" : "Item"}
+              </TableHead>
               <TableHead>Image</TableHead>
               <TableHead>
                 {cartQuantity! > 1 ? "Quantities" : "Quantity"}
@@ -64,7 +66,9 @@ export function CartSummary({ isAddress }: { isAddress: boolean }) {
             {cartItems &&
               cartItems.map((item, index) => (
                 <TableRow key={index}>
-                  <TableCell>{item?.title}</TableCell>
+                  <TableCell className="hidden sm:block">
+                    {item?.title}
+                  </TableCell>
                   <TableCell>
                     <img src={item?.image} height="48px" width="48px" />
                   </TableCell>
