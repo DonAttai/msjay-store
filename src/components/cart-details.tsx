@@ -52,7 +52,7 @@ export function CartSummary({ isAddress }: { isAddress: boolean }) {
         <Table className="mb-4">
           <TableHeader>
             <TableRow>
-              <TableHead className="hidden sm:block">
+              <TableHead className="hidden sm:table-cell">
                 {cartQuantity! > 1 ? "Items" : "Item"}
               </TableHead>
               <TableHead>Image</TableHead>
