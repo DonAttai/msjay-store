@@ -1,10 +1,9 @@
-import { useEffect, useReducer } from "react";
+import { useEffect } from "react";
 import toast from "react-hot-toast";
 import { useRegister } from "../hooks/useRegister";
 
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { AxiosError } from "axios";
-import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { z } from "zod";
 import {
   Card,
@@ -46,11 +45,6 @@ export const Register = () => {
     isError,
     error,
   } = useRegister();
-
-  const [isPasswordShown, toggleVisibility] = useReducer(
-    (prevState) => !prevState,
-    false
-  );
 
   const navigate = useNavigate();
 
@@ -134,36 +128,23 @@ export const Register = () => {
                   </FormItem>
                 )}
               />
-              <div className="flex flex-col relative mb-3">
-                <FormField
-                  control={form.control}
-                  name="password"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Password</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="At least 8 characters"
-                          type={isPasswordShown ? "text" : "password"}
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                {isPasswordShown ? (
-                  <FaRegEye
-                    onClick={toggleVisibility}
-                    className="absolute right-10 bottom-2 text-gray-500 cursor-pointer text-2xl"
-                  />
-                ) : (
-                  <FaRegEyeSlash
-                    onClick={toggleVisibility}
-                    className="absolute right-10 bottom-2 text-gray-500 cursor-pointer text-2xl"
-                  />
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Password</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="At least 8 characters"
+                        type="password"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
                 )}
-              </div>
+              />
 
               <Button
                 type="submit"

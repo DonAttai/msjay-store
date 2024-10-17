@@ -5,10 +5,12 @@ import { currencyFormatter } from "@/lib/currency-formatter";
 import { EXCHANGE_RATE } from "@/lib/utils";
 
 function getInitials(fullName: string) {
-  const names = fullName.split(" ").slice(0, 2);
-  const initials = names
-    .map((name) => name.trim().charAt(0).toUpperCase())
-    .join("");
+  let initials;
+  const names = fullName.split(" ");
+  initials = names.map((name) => name.charAt(0).toUpperCase()).join("");
+  if (initials.length > 2) {
+    initials = initials.slice(0, 2);
+  }
   return initials;
 }
 

@@ -1,9 +1,8 @@
-import { useEffect, useReducer } from "react";
+import { useEffect } from "react";
 import { useUserActions } from "../stores/user-store";
 import { useLogin } from "../hooks/useLogin";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
-import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { z } from "zod";
 
 import { AxiosError } from "axios";
@@ -36,10 +35,6 @@ type LoginType = z.infer<typeof loginSchema>;
 export const Login = () => {
   const { data, isLoading, mutate, isError, isSuccess, error } = useLogin();
   const { setCredentials } = useUserActions();
-  const [isPasswordShown, toggleVisibility] = useReducer(
-    (prevState) => !prevState,
-    false
-  );
 
   useEffect(() => {
     if (data) {
@@ -94,44 +89,31 @@ export const Login = () => {
                   </FormItem>
                 )}
               />
-              <div className="flex flex-col relative mb-3">
-                <FormField
-                  control={form.control}
-                  name="password"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="flex justify-between">
-                        <p>Password</p>
-                        <Link
-                          to="/forgot-password"
-                          className="font-base text-green-500 hover:text-green-700 duration-300"
-                        >
-                          Forgot password?
-                        </Link>
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="At least 8 characters"
-                          type={isPasswordShown ? "text" : "password"}
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                {isPasswordShown ? (
-                  <FaRegEye
-                    onClick={toggleVisibility}
-                    className="absolute right-10 bottom-2 text-gray-500 cursor-pointer text-2xl"
-                  />
-                ) : (
-                  <FaRegEyeSlash
-                    onClick={toggleVisibility}
-                    className="absolute top-8 right-2 text-gray-500 cursor-pointer text-2xl"
-                  />
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="flex justify-between">
+                      <p>Password</p>
+                      <Link
+                        to="/forgot-password"
+                        className="font-base text-green-500 hover:text-green-700 duration-300"
+                      >
+                        Forgot password?
+                      </Link>
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="At least 8 characters"
+                        type="password"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
                 )}
-              </div>
+              />
 
               <Button
                 type="submit"

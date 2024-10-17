@@ -8,7 +8,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -16,8 +15,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { ArrowUpRight } from "lucide-react";
-import { Link } from "react-router-dom";
 import { currencyFormatter } from "@/lib/currency-formatter";
 import { EXCHANGE_RATE } from "@/lib/utils";
 
@@ -35,12 +32,12 @@ export function Transactions() {
           <CardTitle>Transactions</CardTitle>
           <CardDescription>Recent transactions.</CardDescription>
         </div>
-        <Button asChild size="sm" className="ml-auto gap-1">
+        {/* <Button asChild size="sm" className="ml-auto gap-1">
           <Link to="#">
             View All
             <ArrowUpRight className="h-4 w-4" />
           </Link>
-        </Button>
+        </Button> */}
       </CardHeader>
       <CardContent>
         <Table>
