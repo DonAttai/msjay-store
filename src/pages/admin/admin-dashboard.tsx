@@ -1,5 +1,5 @@
 import { useUser } from "@/stores/user-store";
-import { Activity, CreditCard, DollarSign, Users } from "lucide-react";
+import { Activity, CreditCard, Users } from "lucide-react";
 
 import { Navigate } from "react-router-dom";
 import { Role } from "@/lib/utils";
@@ -30,10 +30,7 @@ export default function AdminDashboard() {
       <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
         <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
           {/* Total revenue */}
-          <DashboardCard
-            title="Total Revenue"
-            icon={<DollarSign className="h-4 w-4 text-muted-foreground" />}
-          >
+          <DashboardCard title="Total Revenue" icon={<NairaSign />}>
             <div className="text-2xl font-bold">{totalAmount}</div>
             <p className="text-xs text-muted-foreground">
               +20.1% from last month
@@ -78,4 +75,8 @@ export default function AdminDashboard() {
       </main>
     </div>
   );
+}
+
+function NairaSign() {
+  return <span className="h-4 w-4 text-muted-foreground">₦</span>;
 }
