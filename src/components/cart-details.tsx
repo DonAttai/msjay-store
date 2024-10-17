@@ -32,7 +32,7 @@ export function CartSummary({ isAddress }: { isAddress: boolean }) {
   const { data } = useProducts();
 
   useEffect(() => {
-    if (window.screen.width < 640) {
+    if (window.screen.width > 640) {
       setSmallScreen(false);
     }
   }, [setSmallScreen]);
@@ -88,9 +88,9 @@ export function CartSummary({ isAddress }: { isAddress: boolean }) {
           <TableFooter>
             <TableRow className="font-bold">
               {smallScreen ? (
-                <TableCell colSpan={3}>Total Amount</TableCell>
-              ) : (
                 <TableCell colSpan={2}>Total Amount</TableCell>
+              ) : (
+                <TableCell colSpan={3}>Total Amount</TableCell>
               )}
               <TableCell>{currencyFormatter(totalPrice as number)}</TableCell>
             </TableRow>

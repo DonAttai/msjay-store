@@ -11,6 +11,12 @@ import {
 import { useProducts } from "@/hooks/useProducts";
 import { currencyFormatter } from "@/lib/currency-formatter";
 import { EXCHANGE_RATE } from "@/lib/utils";
+import { OrderType } from "@/types";
+import { useEffect, useState } from "react";
+
+function getOrderQuantities(order: OrderType) {
+  return order.cartItems.reduce((total, item) => total + item.quantity, 0);
+}
 
 export default function OrderConfirmation({
   reference,
@@ -22,13 +28,19 @@ export default function OrderConfirmation({
     isLoading,
     isSuccess,
   } = useCurrentOrder(reference as string);
+  const [smallScreen, setSmallScreen] = useState(true);
 
   const { data: products } = useProducts();
 
   const address = order && order.addressInfo;
   const customer = order && order.customer;
+  const quantities = order && getOrderQuantities(order);
 
-  // get user
+  useEffect(() => {
+    if (window.screen.width > 640) {
+      setSmallScreen(false);
+    }
+  }, [setSmallScreen]);
 
   const orderedItems = order?.cartItems.map((cartItem) => {
     const item = products?.products.find(
@@ -58,12 +70,19 @@ export default function OrderConfirmation({
               {order.orderStatus}
             </p>
           </div>
-          <p className="mt-2 font-bold underline text-center">ITEMS</p>
+          <p className="mt-2 font-bold underline text-center">
+            {quantities! > 1 ? "ITEMS" : "ITEM"}
+          </p>
           <Table className="mb-4">
             <TableHeader>
               <TableRow>
-                <TableHead>Item(s)</TableHead>
-                <TableHead>Quantities</TableHead>
+                <TableHead className="hidden sm:table-cell">
+                  {quantities! > 1 ? "Items" : "Item"}
+                </TableHead>
+                <TableHead>Image</TableHead>
+                <TableHead>
+                  {quantities! > 1 ? "Quantities" : "Quantity"}
+                </TableHead>
                 <TableHead>Price</TableHead>
               </TableRow>
             </TableHeader>
@@ -71,7 +90,12 @@ export default function OrderConfirmation({
               {orderedItems &&
                 orderedItems.map((item, index) => (
                   <TableRow key={index}>
-                    <TableCell>{item?.title}</TableCell>
+                    <TableCell className="hidden sm:table-cell">
+                      {item?.title}
+                    </TableCell>
+                    <TableCell>
+                      <img src={item?.image} height="48px" width="48px" />
+                    </TableCell>
                     <TableCell>{item?.quantity}</TableCell>
                     <TableCell>
                       {currencyFormatter(item?.price! * item?.quantity)}
@@ -81,7 +105,11 @@ export default function OrderConfirmation({
             </TableBody>
             <TableFooter>
               <TableRow className="font-bold">
-                <TableCell colSpan={2}>Total</TableCell>
+                {smallScreen ? (
+                  <TableCell colSpan={2}>Total</TableCell>
+                ) : (
+                  <TableCell colSpan={3}>Total</TableCell>
+                )}
                 <TableCell>
                   {currencyFormatter(
                     Number(order?.totalAmount) / EXCHANGE_RATE
