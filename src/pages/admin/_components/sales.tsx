@@ -6,7 +6,9 @@ import { EXCHANGE_RATE } from "@/lib/utils";
 
 function getInitials(fullName: string) {
   const names = fullName.split(" ").slice(0, 2);
-  const initials = names.map((name) => name.charAt(0).toUpperCase()).join("");
+  const initials = names
+    .map((name) => name.trim().charAt(0).toUpperCase())
+    .join("");
   return initials;
 }
 
