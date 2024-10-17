@@ -33,7 +33,7 @@ export const columns: ColumnDef<OrderType>[] = [
   },
   {
     accessorKey: "totalAmount",
-    header: () => <div>Total Amount(N)</div>,
+    header: () => <div>Amount (Naira)</div>,
     cell: ({ row }) => {
       const totalAmount: number = row.getValue("totalAmount");
       return <div>{formatNumber(totalAmount / EXCHANGE_RATE)}</div>;

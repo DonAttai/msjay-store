@@ -42,7 +42,11 @@ axiosInstance.interceptors.response.use(
     const { user } = useUserStore.getState();
     const status = error?.response?.status ?? null;
     const errorMessage = error.response?.data?.message;
-    if (status === 401 && errorMessage === "Invalid Access Token") {
+    if (
+      status === 401 &&
+      (errorMessage === "Invalid Access Token" ||
+        errorMessage === "No Access Token")
+    ) {
       if (user) {
         const { setCredentials } = useUserStore.getState().actions;
         setCredentials(null);

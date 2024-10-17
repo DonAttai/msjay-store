@@ -1,9 +1,9 @@
-import { getAllCustomers } from "@/hooks/useCustomers";
+import { useGetAllCustomers } from "@/hooks/useCustomers";
 import { columns } from "./columns";
 import { DataTable } from "./data-table";
 
 export default function Customers() {
-  const { data: allCustomers, isLoading } = getAllCustomers();
+  const { data: allCustomers, isLoading } = useGetAllCustomers();
   return (
     <div className="container mx-auto py-10">
       {isLoading ? (

@@ -41,7 +41,9 @@ export const CheckoutPage = () => {
       <div className="my-4 flex flex-col gap-4 mx-4 sm:flex-row sm:justify-center ">
         <div>
           {isLoadingCart ? (
-            <div className="text-2xl font-bold">Wait...</div>
+            <div className="text-2xl font-bold">
+              Loading cart details<span className="animate-pulse">...</span>
+            </div>
           ) : (
             <CartSummary isAddress={isSuccess} />
           )}
@@ -50,7 +52,9 @@ export const CheckoutPage = () => {
           {address ? (
             <ShippingAddress />
           ) : isFetchingAddress ? (
-            <div className="text-3xl">Wait...</div>
+            <div className="text-2xl">
+              Please Wait<span className="animate-pulse">...</span>
+            </div>
           ) : (
             <AddShippingAddressForm />
           )}

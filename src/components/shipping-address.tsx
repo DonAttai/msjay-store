@@ -18,13 +18,15 @@ export function ShippingAddress() {
   );
 
   if (isAddressLoading) {
-    <p>Loading...</p>;
+    <p>Loading address...</p>;
   }
   return (
     <Card className="max-w-[425px] w-fit">
       <CardHeader>
         <CardTitle>Shipping Address</CardTitle>
-        <CardDescription>Items will be shipped to this address</CardDescription>
+        <CardDescription>
+          Item(s) will be shipped to this address
+        </CardDescription>
       </CardHeader>
       <CardContent>
         {address && (

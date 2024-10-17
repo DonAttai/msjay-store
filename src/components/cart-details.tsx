@@ -23,11 +23,19 @@ import {
 import { useProducts } from "@/hooks/useProducts";
 import { ProductType } from "@/types";
 import { PayWithPaystack } from "./paystack";
+import { useEffect, useState } from "react";
 
 export function CartSummary({ isAddress }: { isAddress: boolean }) {
+  const [smallScreen, setSmallScreen] = useState(true);
   const totalPrice = useCalculateTotalPrice() as number;
   const { data: cart } = useCart();
   const { data } = useProducts();
+
+  useEffect(() => {
+    if (window.screen.width < 640) {
+      setSmallScreen(false);
+    }
+  }, [setSmallScreen]);
 
   // get cart  quantity
   const cartQuantity = useCartQuantity();
@@ -79,7 +87,11 @@ export function CartSummary({ isAddress }: { isAddress: boolean }) {
           </TableBody>
           <TableFooter>
             <TableRow className="font-bold">
-              <TableCell colSpan={3}>Total Amount</TableCell>
+              {smallScreen ? (
+                <TableCell colSpan={3}>Total Amount</TableCell>
+              ) : (
+                <TableCell colSpan={2}>Total Amount</TableCell>
+              )}
               <TableCell>{currencyFormatter(totalPrice as number)}</TableCell>
             </TableRow>
           </TableFooter>

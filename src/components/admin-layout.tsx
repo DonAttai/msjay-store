@@ -86,7 +86,7 @@ export default function AdminLayout() {
           >
             Customers
           </NavLink>
-          <NavLink
+          {/* <NavLink
             to="/admin/analytics"
             className={({ isActive }) =>
               cn(
@@ -96,7 +96,7 @@ export default function AdminLayout() {
             }
           >
             Analytics
-          </NavLink>
+          </NavLink> */}
         </nav>
         <Sheet>
           <SheetTrigger asChild>
@@ -153,14 +153,14 @@ export default function AdminLayout() {
                   Customers
                 </NavLink>
               </SheetClose>
-              <SheetClose asChild>
+              {/* <SheetClose asChild>
                 <NavLink
                   to="/admin/analytics"
                   className="text-muted-foreground hover:text-foreground"
                 >
                   Analytics
                 </NavLink>
-              </SheetClose>
+              </SheetClose> */}
             </nav>
           </SheetContent>
         </Sheet>
