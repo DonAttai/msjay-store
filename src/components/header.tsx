@@ -27,21 +27,18 @@ export const Header = () => {
             Ms Jay Store
           </NavLink>
           <div className="flex gap-2 duration-300 sm:gap-5 sm:pr-16">
-            <div className="flex hover:text-green-400">
-              <Link to="cart" className="text-lg">
+            <div className="relative mx-8">
+              <Link to="cart" className="absolute text-lg">
                 <TiShoppingCart size="1.8em" />
               </Link>
               {cartQuantity! > 0 ? (
-                <span className=" rounded-full text-base font-medium px-1">
-                  ({cartQuantity})
+                <span className="absolute text-center bg-red-500 -top-1 rounded-full text-sm px-1">
+                  {cartQuantity}
                 </span>
               ) : null}
             </div>
             {!user ? (
-              <NavLink
-                to="auth/login"
-                className="pl-2 duration-300 hover:text-green-400"
-              >
+              <NavLink to="auth/login" className="pl-2 duration-300">
                 {/* Login */}
                 <Button variant="ghost" className="text-lg font-bold">
                   <LogIn className="h-4 w-4 mr-1 font-bold" />
