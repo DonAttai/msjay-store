@@ -31,9 +31,11 @@ export const Header = () => {
               <Link to="cart" className="text-lg">
                 <TiShoppingCart size="1.8em" />
               </Link>
-              <span className=" rounded-full text-base font-medium px-1">
-                ({cartQuantity || 0})
-              </span>
+              {cartQuantity! > 0 ? (
+                <span className=" rounded-full text-base font-medium px-1">
+                  ({cartQuantity})
+                </span>
+              ) : null}
             </div>
             {!user ? (
               <NavLink
