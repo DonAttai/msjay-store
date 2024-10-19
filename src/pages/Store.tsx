@@ -27,7 +27,7 @@ export const Home = () => {
   return (
     <>
       <Hero />
-      <div className="flex justify-center py-8">
+      <div id="products" className="flex justify-center py-8 pt-24">
         <Input
           type="search"
           defaultValue={q!}

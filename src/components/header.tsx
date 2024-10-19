@@ -21,7 +21,7 @@ export const Header = () => {
 
   return (
     <>
-      <header className="w-screen h-16 bg-slate-900  text-white font-bold text-xl fixed z-10">
+      <header className="w-screen h-16 bg-gray-800  text-white font-bold text-xl fixed z-10">
         <div className=" container mx-auto h-full flex items-center justify-between relative sm:pr-8 ">
           <NavLink to="/" className="pl-2 duration-300 hover:text-green-400">
             Ms Jay Store
