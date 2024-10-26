@@ -18,8 +18,6 @@ export const Item = ({ productId, quantity }: CartItem) => {
     useDecreaseCartItemQuantity(productId);
   const { mutate: removeItemFromCart } = useRemoveItemFromCart();
 
-  // const { removeItemFromCart } = useCartActions();
-
   const product = data?.products?.find((product) => product._id === productId);
   const amount = Number(product?.price) * quantity;
 

@@ -1,8 +1,7 @@
 import { useEffect } from "react";
-import { useUserActions } from "../stores/user-store";
 import { useLogin } from "../hooks/useLogin";
 import toast from "react-hot-toast";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { z } from "zod";
 
 import { AxiosError } from "axios";
@@ -25,6 +24,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { PasswordInput } from "@/components/password-input";
+import { ArrowLeft } from "lucide-react";
 
 const loginSchema = z.object({
   email: z.string().email(),
@@ -33,15 +34,8 @@ const loginSchema = z.object({
 type LoginType = z.infer<typeof loginSchema>;
 
 export const Login = () => {
-  const { data, isLoading, mutate, isError, isSuccess, error } = useLogin();
-  const { setCredentials } = useUserActions();
-
-  useEffect(() => {
-    if (data) {
-      setCredentials(data);
-      window.location.href = "/";
-    }
-  }, [setCredentials, data]);
+  const { isLoading, mutate, isError, error } = useLogin();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (isError) {
@@ -51,8 +45,7 @@ export const Login = () => {
         toast.error(errorMessage);
       }
     }
-    if (isSuccess) toast.success("Login successful!");
-  }, [isError, isSuccess]);
+  }, [isError, error]);
 
   const form = useForm<LoginType>({
     resolver: zodResolver(loginSchema),
@@ -69,9 +62,19 @@ export const Login = () => {
 
   return (
     <div className="min-h-[calc(100vh-128px)] grid place-items-center ">
+      <Button
+        variant="outline"
+        onClick={() => navigate("/store")}
+        className="text-green-500 hover:text-green-700"
+      >
+        <ArrowLeft className="h-4 w-4 mx-2" aria-hidden="true" />
+        Back To Store
+      </Button>
       <Card>
         <CardHeader>
-          <CardTitle>Sign In</CardTitle>
+          <CardTitle className="inline-flex justify-between">
+            Login <span className="text-sm">Ms Jay Store</span>
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <Form {...form}>
@@ -104,9 +107,10 @@ export const Login = () => {
                       </Link>
                     </FormLabel>
                     <FormControl>
-                      <Input
-                        placeholder="At least 8 characters"
-                        type="password"
+                      <PasswordInput
+                        id="Password"
+                        placeholder="Password"
+                        autoComplete="current-password"
                         {...field}
                       />
                     </FormControl>

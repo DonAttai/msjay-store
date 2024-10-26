@@ -178,7 +178,7 @@ export default function AdminLayout() {
               <DropdownMenuSeparator />
 
               <DropdownMenuItem asChild>
-                <Link to="/">
+                <Link to="/store">
                   <Store className="mr-2 h-4 w-4" />
                   <span>Store</span>
                 </Link>

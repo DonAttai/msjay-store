@@ -18,6 +18,7 @@ import {
   VerifyEmail,
   ResetPassword,
   GuestCheckout,
+  Store,
 } from "./pages";
 import { Cart, CheckoutPage, ProductDetails } from "./components";
 import { Toaster } from "react-hot-toast";
@@ -36,6 +37,8 @@ const router = createBrowserRouter(
       <Route path="verify-email" element={<VerifyEmail />} />
       <Route path="forgot-password" element={<ForgotPassword />} />
       <Route path="reset-password/:token" element={<ResetPassword />} />
+      <Route path="/auth/login" element={<Login />} />
+      <Route path="/auth/register" element={<Register />} />
       <Route path="admin" element={<AdminLayout />}>
         <Route path="dashboard" element={<AdminDashboard />} />
         <Route path="orders" element={<Orders />} />
@@ -44,9 +47,8 @@ const router = createBrowserRouter(
         <Route path="analytics" element={<Analytics />} />
       </Route>
       <Route path="/" element={<App />}>
-        <Route path="/auth/login" element={<Login />} />
-        <Route path="/auth/register" element={<Register />} />
         <Route index element={<Home />} />
+        <Route path="store" element={<Store />} />
         <Route path="cart" element={<Cart />} />
         <Route path="product/:id" element={<ProductDetails />} />
         <Route path="checkout" element={<CheckoutPage />} />

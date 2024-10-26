@@ -1,6 +1,6 @@
-import { Button } from "./ui/button";
+import { Link } from "react-router-dom";
 
-export const Hero = () => {
+export function Home() {
   return (
     <section
       className="relative h-screen bg-cover bg-center"
@@ -16,14 +16,15 @@ export const Hero = () => {
           <h1 className="text-white text-3xl font-bold">
             Welcome to Ms Jay Store
           </h1>
-          <p>Your Best Online Store Destination!</p>
-          <a href="#products">
-            <Button className="mt-6 px-6 py-3 text-lg font-bold bg-green-500 text-white rounded-lg hover:bg-green-700">
-              Shop Now
-            </Button>
-          </a>
+          <p className="mb-4">Your Best Online Store Destination!</p>
+          <Link
+            to="/store"
+            className="mt-8 px-6 py-3 text-lg font-bold bg-green-500 text-white rounded-lg hover:bg-green-700"
+          >
+            Shop Now
+          </Link>
         </div>
       </div>
     </section>
   );
-};
+}

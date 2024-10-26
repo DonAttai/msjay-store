@@ -9,7 +9,7 @@ export default function EmptyCart() {
       </div>
       <p className="text-xl max-w-sm">Your cart is empty</p>
       <Link
-        to="/"
+        to="/store"
         className="bg-green-500 font-semibold shadow-md rounded-md text-white p-2 hover:bg-green-700"
       >
         START SHOPPING

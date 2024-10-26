@@ -12,30 +12,36 @@ import { currencyFormatter } from "../lib/currency-formatter";
 
 //import components
 import { Item } from ".";
-import { Link, useNavigate } from "react-router-dom";
-import EmptyCart from "./empty-cart";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
 import { useUser } from "@/stores/user-store";
-import toast from "react-hot-toast";
 
 //import modal
 
 export const Cart = () => {
-  const { data: cart, isError } = useCart();
+  const { data: cart, isLoading } = useCart();
   const user = useUser();
   const cartQuantity = useCartQuantity();
 
   const totalPrice = useCalculateTotalPrice();
 
-  if (isError) {
-    toast.error("error");
+  if ((cartQuantity as number) <= 0) {
+    return <Navigate to="/store" />;
+  }
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen text-3xl grid place-content-center">
+        Loading...
+      </div>
+    );
   }
 
   return (
     <>
       <section className=" bg-gray-100 pt-4 min-h-[calc(100vh-128px)] md:p-4">
         <div className="mx-2 md:mx-0">
-          {cart?.products?.length ? (
+          {cartQuantity && (
             <section className="flex flex-col justify-between container items-center mx-auto gap-5 md:flex-row md:items-start ">
               <div className="bg-white shadow-md rounded-md  md:w-3/4">
                 <div className="flex flex-col justify-between gap-3 pl-5 mt-4">
@@ -44,7 +50,7 @@ export const Cart = () => {
                   </h3>
                 </div>
                 <div>
-                  {cart.products.map((cartItem) => (
+                  {cart?.products.map((cartItem) => (
                     <Item key={cartItem.productId} {...cartItem} />
                   ))}
                 </div>
@@ -73,7 +79,7 @@ export const Cart = () => {
                     />
                   )}
                   <Link
-                    to="/"
+                    to="/store"
                     className="p-2 bg-green-500 rounded-md shadow text-white text-lg font-bold duration-300 hover:bg-green-700"
                   >
                     Back To Store
@@ -81,8 +87,6 @@ export const Cart = () => {
                 </div>
               </div>
             </section>
-          ) : (
-            <EmptyCart />
           )}
         </div>
       </section>

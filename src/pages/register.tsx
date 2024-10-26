@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { PasswordInput } from "@/components/password-input";
 
 const signUpSchema = z.object({
   firstName: z
@@ -135,9 +136,10 @@ export const Register = () => {
                   <FormItem>
                     <FormLabel>Password</FormLabel>
                     <FormControl>
-                      <Input
+                      <PasswordInput
+                        id="Password"
                         placeholder="At least 8 characters"
-                        type="password"
+                        autoComplete="current-password"
                         {...field}
                       />
                     </FormControl>
