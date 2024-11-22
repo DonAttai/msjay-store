@@ -15,12 +15,11 @@ import { Item } from ".";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
 import { useUser } from "@/stores/user-store";
-import axios from "axios";
 
 //import modal
 
 export const Cart = () => {
-  const { data: cart, isLoading, error } = useCart();
+  const { data: cart, isLoading } = useCart();
   const user = useUser();
   const cartQuantity = useCartQuantity();
 
