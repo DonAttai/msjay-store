@@ -15,11 +15,12 @@ import { Item } from ".";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
 import { useUser } from "@/stores/user-store";
+import axios from "axios";
 
 //import modal
 
 export const Cart = () => {
-  const { data: cart, isLoading } = useCart();
+  const { data: cart, isLoading, error } = useCart();
   const user = useUser();
   const cartQuantity = useCartQuantity();
 
@@ -31,7 +32,7 @@ export const Cart = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen text-3xl grid place-content-center">
+      <div className="h-screen text-3xl grid place-content-center">
         Loading...
       </div>
     );
@@ -69,7 +70,7 @@ export const Cart = () => {
                   </div>
                   <hr className="w-full" />
                 </div>
-                <div className="text-center mb-2 gap-2 flex flex-col px-4">
+                <div className="text-center mb-2 gap-2 flex flex-col shrink-0 px-4">
                   {user ? (
                     <CheckoutButton title="Checkout" url="checkout" />
                   ) : (

@@ -8,6 +8,7 @@ import { AxiosError } from "axios";
 import {
   Card,
   CardContent,
+  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -61,20 +62,23 @@ export const Login = () => {
   };
 
   return (
-    <div className="min-h-[calc(100vh-128px)] grid place-items-center ">
+    <div className="flex flex-col items-center mt-20">
       <Button
         variant="outline"
         onClick={() => navigate("/store")}
-        className="text-green-500 hover:text-green-700"
+        className="text-green-500 hover:text-green-700 mb-10"
       >
         <ArrowLeft className="h-4 w-4 mx-2" aria-hidden="true" />
         Back To Store
       </Button>
-      <Card>
+      <Card className="w-[350px] sm:max-w-[400px]">
         <CardHeader>
           <CardTitle className="inline-flex justify-between">
-            Login <span className="text-sm">Ms Jay Store</span>
+            Sign in to Ms Jay Store
           </CardTitle>
+          <CardDescription>
+            Welcome back! Please sign in to continue
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>

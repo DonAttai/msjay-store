@@ -19,7 +19,7 @@ export const Store = () => {
   if (isLoading) {
     return (
       <div className="text-2xl h-[90vh] flex items-center justify-center ">
-        <h1 className="2xl font-medium">Loading Products...</h1>
+        <h1 className="2xl font-medium">Loading...</h1>
       </div>
     );
   }

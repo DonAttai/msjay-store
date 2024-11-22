@@ -62,11 +62,15 @@ export const columns: ColumnDef<OrderType>[] = [
       );
     },
     cell: ({ row }) => {
-      const date: Date = row.getValue("createdAt");
-      const formatted = new Intl.DateTimeFormat("en-GB", {
-        dateStyle: "medium",
-      }).format(new Date(date));
-      return <div>{formatted}</div>;
+      const date: string = row.getValue("createdAt");
+      const formattedDate = date.split("T")[0];
+      const formattedTime = date.split("T")[1].split(".")[0];
+      return (
+        <div>
+          <p>{formattedDate}</p>
+          <p className="text-muted-foreground">{formattedTime}</p>
+        </div>
+      );
     },
   },
 
