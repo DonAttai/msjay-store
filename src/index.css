@@ -5,6 +5,9 @@
 html {
   scroll-behavior: smooth;
 }
+input.shadcn-input {
+  box-shadow: none !important;
+}
 
 @layer base {
   :root {

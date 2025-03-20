@@ -36,7 +36,7 @@ export default function SuccessPage() {
         </CardContent>
         <CardFooter className="flex justify-center">
           <Button
-            onClick={() => navigate("/")}
+            onClick={() => navigate("/store")}
             className=" w-24 bg-green-600 text-lg font-bold hover:bg-green-700"
           >
             Ok
